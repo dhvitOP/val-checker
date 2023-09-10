@@ -1,0 +1,40 @@
+{
+    "data" : {
+        "client_id": "play-valorant-web-prod",
+        "nonce": "1",
+        "redirect_uri": "https://playvalorant.com/opt_in",
+        "response_type": "token id_token",
+        "scope": "account openid"
+    },
+    "instance_headers" : {
+        "Content-Type": "application/json",
+        "User-Agent": "RiotClient/{RiotClientVersion} %s (Windows;10;;Professional, x64)"
+    },
+    "auth_headers": {
+        "Content-Type": "application/json",
+        "User-Agent": "RainbowSixSiege/{RiotClientVersion} %s (Windows;10;;Professional, x64)"
+    },
+    "token_headers": {
+        "User-Agent": "RainbowSixSiege/{RiotClientVersion} %s (Windows;10;;Professional, x64)",
+        "Authorization": "Bearer {token}"
+    },
+    "skins_headers": {
+            "X-Riot-Entitlements-JWT": "{ent_token}",
+            "Authorization": "Bearer {token}",
+            "User-Agent": "RiotClient/{RiotClientVersion} %s (Windows;10;;Professional, x64)"
+    },
+    "ciphers": [
+        "ECDHE-ECDSA-AES128-GCM-SHA256",
+        "ECDHE-ECDSA-CHACHA20-POLY1305",
+        "ECDHE-RSA-AES128-GCM-SHA256",
+        "ECDHE-RSA-CHACHA20-POLY1305",
+        "ECDHE+AES128",
+        "RSA+AES128",
+        "ECDHE+AES256",
+        "RSA+AES256",
+        "ECDHE+3DES",
+        "RSA+3DES"
+        ]
+    
+    
+}

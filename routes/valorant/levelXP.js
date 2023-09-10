@@ -1,0 +1,24 @@
+const { Router } = require("express");
+const router = Router();
+const getAccLevel = require("../../functions/info/getAccLevel");
+const accSchema = require("../../database/schemas/account");
+const axios = require("axios");
+const { apiUrl } = require("../../constants/config.json");
+router.get("/", async(req, res) => {
+    const accID = req.query.accID;
+    if(!accID) return res.send({msg: "Please provide an account ID"});
+    const acc = await accSchema.findOne({accID:accID});
+    if(!acc) return res.send({msg: "Account not found"});
+    const auth = await axios.get(apiUrl + "/acc/reAuth?accID=" + accID);
+    if(auth.data.err == "cookie_expired") return res.send({msg: "Cookie Expired, Go to /acc/:id/:password to reAuth", err: "cookie_expired"});
+    if(!auth.data.data) return res.send({msg: "ID PASS Invalid, maybe password is changed"});
+    const { token,ent_token } = auth.data.data;
+    const level = await getAccLevel({token:token,ent_token:ent_token,puuid:acc.puuid,region:acc.region});
+    if(level == "An error occured") return res.send({msg: "An error occured"});
+    acc.level = level.level;
+    acc.xp = level.xp;
+    acc.history = level.history;
+    await acc.save();
+    return res.send({msg: "Level Fetched Successfully", level: level.level, xp: level.xp, history: level.history});
+});
+module.exports = router;

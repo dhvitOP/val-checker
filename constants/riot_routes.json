@@ -1,0 +1,43 @@
+{
+    "authorization": {
+        "url": "https://auth.riotgames.com/api/v1/authorization",
+        "method": ["POST","PUT"],
+        "purpose": "Getting account token"
+    },
+    "Entitlement": {
+        "url": "https://entitlements.auth.riotgames.com/api/token/v1",
+        "method": ["POST"],
+        "purpose": "Getting account entitlements token using access_token from authorization"
+    },
+    "UserInfo": {
+        "url": "https://auth.riotgames.com/userinfo",
+        "method": ["POST"],
+        "purpose":"Getting User's Info using its access_token from authorization"
+    },
+    "Skins": {
+        "url": "https://pd.{region}.a.pvp.net/store/v1/entitlements/{puuid}/e7c63390-eda7-46e0-bb7a-a6abdacd2433",
+        "method": ["GET"],
+        "purpose": "Getting User's Skins and other owned items using its access_token from authorization"
+    },
+    "reAuth": {
+        "url": "https://auth.riotgames.com/authorize?redirect_uri=https%3A%2F%2Fplayvalorant.com%2Fopt_in&client_id=play-valorant-web-prod&response_type=token%20id_token&nonce=1",
+        "method": ["GET"],
+        "purpose": "Getting User's access_token using saved cookies rather than using id pass"
+    },
+    "LevelXp": {
+        "url": "https://pd.{region}.a.pvp.net/account-xp/v1/players/{puuid}",
+        "method": ["GET"],
+        "purpose": "Getting User's Level and XP using its puuid from UserInfo"
+    },
+    "matchHistory": {
+        "url": "https://pd.{region}.a.pvp.net/match-history/v1/history/{puuid}",
+        "method": ["GET"],
+        "purpose": "Getting User's Match History using its puuid from UserInfo"
+    },
+    "userPenalty": {
+        "url": "https://pd.{region}.a.pvp.net/restrictions/v3/penalties",
+        "method": ["GET"],
+        "purpose": "Getting User's Penalty using its puuid from UserInfo"
+    }
+
+}
