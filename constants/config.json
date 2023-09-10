@@ -3,6 +3,6 @@
     "mongoUrl1": "mongodb://127.0.0.1:27017/explorant",
     "mongoUrl": "mongodb+srv://ee3dev:ee3dev28@open-ai.ythc9cp.mongodb.net/explorant",
     "encryptKey": "KSFNBRYVSDBRGG12498941314190",
-    "apiUrl": "http://localhost:3000",
-    "websiteUrl": "http://localhost:3000"
+    "apiUrl": "https://val-acc-checker-production.up.railway.app/",
+    "websiteUrl": "https://val-acc-checker-production.up.railway.app/"
 }
