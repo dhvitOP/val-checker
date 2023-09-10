@@ -11,5 +11,26 @@
     "querystring": "^0.2.1",
     "request": "^2.88.2",
     "request-promise": "^4.2.6"
-  }
+  },
+  "name": "acc-checker",
+  "version": "1.0.0",
+  "main": "index.js",
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node index.js",
+    "dev": "nodemon index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dhvitOP/acc-checker.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/dhvitOP/acc-checker/issues"
+  },
+  "homepage": "https://github.com/dhvitOP/acc-checker#readme",
+  "description": ""
 }
