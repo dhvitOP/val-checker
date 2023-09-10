@@ -12,8 +12,6 @@ app.use(express.urlencoded({ extended: true }));
 database();
 
 setTimeout(async () => {
-
-
   for (const property in routes) {
     app.use(property, require(`./routes/${routes[property]}`))
     console.log(`Loaded ${property} route`);
