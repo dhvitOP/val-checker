@@ -1,10 +1,10 @@
 {
-    "/": "/index.js",
-    "/acc/getInfo": "/account/getInfo.js",
-    "/user/skins": "/valorant/skins.js",
-    "/acc/reAuth": "/account/reAuth.js",
-    "/user/accXP": "/valorant/levelXP.js",
-    "/user/matchHistory": "/valorant/matchHistory.js",
-    "/user/penalties": "/valorant/penalties.js",
-    "*": "/not_found.js"
+    "/": "/index",
+    "/acc/getInfo": "/account/getInfo",
+    "/user/skins": "/valorant/skins",
+    "/acc/reAuth": "/account/reAuth",
+    "/user/accXP": "/valorant/levelXP",
+    "/user/matchHistory": "/valorant/matchHistory",
+    "/user/penalties": "/valorant/penalties",
+    "*": "/not_found"
 }

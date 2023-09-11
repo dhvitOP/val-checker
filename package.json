@@ -3,6 +3,7 @@
     "axios": "^1.4.0",
     "axios-cookiejar-support": "^4.0.7",
     "cheerio": "^1.0.0-rc.12",
+    "core-util-is": "^1.0.3",
     "crypto-js": "^4.1.1",
     "express": "^4.18.2",
     "fs": "^0.0.1-security",
@@ -10,16 +11,24 @@
     "mongoose": "^5.11.17",
     "querystring": "^0.2.1",
     "request": "^2.88.2",
-    "request-promise": "^4.2.6"
+    "request-promise": "^4.2.6",
+    "ts-node": "^10.9.1"
   },
   "name": "acc-checker",
   "version": "1.0.0",
-  "main": "index.js",
-  "devDependencies": {},
+  "main": "index.ts",
+  "devDependencies": {
+    "@types/crypto-js": "^4.1.2",
+    "@types/express": "^4.17.17",
+    "@types/tough-cookie": "^4.0.2",
+    "bun-types": "latest"
+  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node index.js",
-    "dev": "nodemon index.js"
+    "start": "node index.ts",
+    "dev": "nodemon index.ts",
+    "build": "npm i",
+    "hm": "ts-node index.ts"
   },
   "repository": {
     "type": "git",
@@ -32,5 +41,8 @@
     "url": "https://github.com/dhvitOP/acc-checker/issues"
   },
   "homepage": "https://github.com/dhvitOP/acc-checker#readme",
-  "description": ""
+  "description": "",
+  "peerDependencies": {
+    "typescript": "^5.0.0"
+  }
 }
