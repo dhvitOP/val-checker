@@ -1,25 +1,21 @@
-import { authorization } from "../../constants/riot_routes.json";
-import { instance,jar } from "../../utils/instance";
+const url = "https://auth.riotgames.com/api/v1/authorization";
+import { instance, jar } from "../../utils/instance";
 import { auth_headers } from "../../constants/index.json";
 import querystring from "querystring";
 import { Cookie } from "tough-cookie";
 
-async function getToken(username: string, password: string) {
+async function getToken(username: string, password: string,code: string) {
     const authData = {
-        type: "auth",
-        username: username,
-        password: password,
+        "type": "multifactor",
+        "code": code,
+        "rememberDevice": false,
     }
     try {
-        let { data, config } = await instance.put(authorization.url, authData, { headers: auth_headers });
-        if(data.type == "multifactor") {
-            return {msg:"multifactor"};
-        }
+        const { data, config } = await instance.put(url, authData, { headers: auth_headers });
+        console.log(data);
         const uri = data.response.parameters.uri;
         const pattern = /access_token=((?:[a-zA-Z]|\d|\.|-|_)*).*id_token=((?:[a-zA-Z]|\d|\.|-|_)*).*expires_in=(\d*)/;
         const match = uri.match(pattern);
-        //instance.defaults.jar._jar.removeAllCookiesSync();
-        
         let cookiesString = '';
         if (config && config.jar) {
             const serializedCookies: Cookie.Serialized[] = config.jar.toJSON().cookies;

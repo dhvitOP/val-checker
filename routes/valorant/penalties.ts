@@ -16,4 +16,4 @@ router.get("/", async(req:Request, res:Response) => {
     if(penalties == "An error occured") return res.send({msg: "An error occured"});
     return res.send({msg: "Penalties Fetched Successfully", penalties: penalties})
 });
-module.exports = router;
+export default router;

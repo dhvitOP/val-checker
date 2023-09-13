@@ -4,6 +4,7 @@ import getAccLevel from '../../functions/info/getAccLevel';
 import accSchema from '../../database/schemas/account';
 import axios from 'axios';
 import { apiUrl } from '../../constants/config.json';
+import loadoutSchema from "../../database/schemas/loadout";
 
 router.get("/", async(req: Request, res: Response) => {
     const accID = req.query.accID;
@@ -16,10 +17,21 @@ router.get("/", async(req: Request, res: Response) => {
     const { token,ent_token } = auth.data.data;
     const level = await getAccLevel({token:token,ent_token:ent_token,puuid:acc.puuid,region:acc.region});
     if(level == "An error occured") return res.send({msg: "An error occured"});
-    acc.level = level.level;
-    acc.xp = level.xp;
-    acc.history = level.history;
-    await acc.save();
-    return res.send({msg: "Level Fetched Successfully", level: level.level, xp: level.xp, history: level.history});
+    
+    res.send({msg: "Level Fetched Successfully", level: level.level, xp: level.xp});
+
+    const loadout = await (loadoutSchema as any).findOne({accID: accID});
+    if(!loadout) {
+        const newLoadout = new loadoutSchema({
+            accID: accID,
+            level: level.level,
+            xp: level.xp,
+        });
+        await newLoadout.save();
+    } else {
+        loadout.level = level.level;
+        loadout.xp = level.xp;
+        await loadout.save();
+    }
 });
-module.exports = router;
+export default router;

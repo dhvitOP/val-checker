@@ -4,6 +4,8 @@ import accSchema from '../../database/schemas/account';
 import { apiUrl } from '../../constants/config.json';
 import axios from 'axios';
 import getMatchHistory from '../../functions/info/getMatchHistory';
+import loadout from "../../database/schemas/loadout";
+
 router.get('/', async (req: Request, res:Response) => {
     const accID = req.query.accID;
     const data = await (accSchema as any).findOne({ accID: accID });
@@ -15,5 +17,16 @@ router.get('/', async (req: Request, res:Response) => {
     const history = await getMatchHistory({token:token,ent_token:ent_token,puuid:data.puuid,region:data.region});
     if(history == "An error occured") return res.send({msg: "An error occured"});
     res.send({msg: "Match History Fetched Successfully", history: history});
+    const loadoutData = await (loadout as any).findOne({accID: accID});
+    if(!loadoutData) {
+        const newLoadout = new loadout({
+            accID: accID,
+            history: history
+        });
+        await newLoadout.save();
+    } else {
+        loadoutData.history = history;
+        await loadoutData.save();
+    }
 });
-module.exports = router;
+export default router;

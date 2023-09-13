@@ -1,5 +1,5 @@
 import express, { Express } from "express";
-import { port, websiteUrl } from "./constants/config.json";
+import { port,websiteUrl } from "./constants/config.json";
 import contactWebsite from "./utils/misc/contactWebsite";
 import database from "./database/connect";
 import routes from "./constants/routes.json";
@@ -12,7 +12,8 @@ database();
 
 setTimeout(async () => {
   for (const property in routes) {
-    app.use(property, require(`./routes/${routes[property] as string}`));
+    const routeModule = await import(`./routes/${routes[property] as string}`);
+    app.use(property, routeModule.default); // Use the exported default handler
     console.log(`Loaded ${property} route`);
   }
 

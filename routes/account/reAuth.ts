@@ -35,4 +35,4 @@ router.get("/", async(req: Request, res: Response) => {
     data.token = reAuthData.access_token;
     res.send({msg: "ReAuthed successfully", data: {token: reAuthData.access_token, ent_token: entData.entitlements_token}});
 });
-module.exports = router;
+export default router;

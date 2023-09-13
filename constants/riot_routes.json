@@ -38,6 +38,11 @@
         "url": "https://pd.{region}.a.pvp.net/restrictions/v3/penalties",
         "method": ["GET"],
         "purpose": "Getting User's Penalty using its puuid from UserInfo"
+    },
+    "userLoadout": {
+        "url": "https://pd.{region}.a.pvp.net/personalization/v2/players/{puuid}/playerloadout",
+        "method": ["GET"],
+        "purpose": "Getting User's Loadout using its puuid from UserInfo"
     }
 
 }

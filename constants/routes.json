@@ -1,10 +1,11 @@
 {
     "/": "/index",
+    "/test": "/test",
     "/acc/getInfo": "/account/getInfo",
     "/user/skins": "/valorant/skins",
     "/acc/reAuth": "/account/reAuth",
     "/user/accXP": "/valorant/levelXP",
     "/user/matchHistory": "/valorant/matchHistory",
-    "/user/penalties": "/valorant/penalties",
+    "/user/loadout": "/valorant/loadout",
     "*": "/not_found"
 }

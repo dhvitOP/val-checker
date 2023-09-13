@@ -8,21 +8,36 @@ import accSchema from '../../database/schemas/account';
 import getRegion from '../../utils/converters/regionConverter';
 import genToken from '../../utils/api/genToken';
 import encrypt from '../../utils/api/encrypt';
+import multiauth from '../../functions/auth/sendMultiAuth';
 
 interface Access_Token {
     access_token: string | string[] | undefined;
     id_token: string | string[] | undefined;
     expires_in: any;
     cookies: string;
+    msg: string;
 }
 
 router.get("/:username/:password", async(req: Request, res:Response) => {
     const username = req.params.username;
     const password = req.params.password;
-    const session = req.query.session;
-
+    const multiAuth = req.query.multiauth;
     await auth();
-    const data = (await getToken(username,password,session == "keep" ? true : false)) as Access_Token;
+    let data: Access_Token;
+    if(multiAuth == "true") {
+        const code = req.query.code as any;
+        if(!code) return res.send({msg: "Code not provided"});
+        data = (await multiauth(username,password,code)) as Access_Token;
+        if (!data || typeof data !== 'object' || !('access_token' in data)) {
+            return res.send({ msg: 'An error occurred' });
+          }
+    } else {
+    
+    data = (await getToken(username,password)) as Access_Token;
+    if(data.msg == "multifactor") {
+        return res.send({msg: "Multifactor Authentication is not supported yet"});
+    }
+}
     const entData = await getEntToken(data.access_token as string);
 
     const userInfo = await getUserInfo(entData.entitlements_token);
@@ -79,4 +94,4 @@ router.get("/:username/:password", async(req: Request, res:Response) => {
     return res.send({token: data.access_token, entitlements_token: entData.entitlements_token, userInfo: userInfo, accID: accID});
 
 });
-module.exports = router;
+export default router;
