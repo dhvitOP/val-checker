@@ -25,7 +25,14 @@ async function getToken(username: string, password: string) {
             const serializedCookies: Cookie.Serialized[] = config.jar.toJSON().cookies;
             cookiesString = serializedCookies.map((cookie: Cookie.Serialized) => `${cookie.key}=${cookie.value}`).join('; ');
         }
-        jar.removeAllCookies()
+      jar.removeAllCookies((err) => {
+        if (err) {
+          console.error('Error removing cookies:', err);
+        } else {
+          //console.log('Cookies removed successfully');
+        }
+      });
+       // jar.removeAllCookies()
         if (match) {
             const fragment = uri.split('#')[1]; 
             const queryParams = querystring.parse(fragment);

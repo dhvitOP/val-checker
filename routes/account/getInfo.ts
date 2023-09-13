@@ -21,9 +21,9 @@ interface Access_Token {
 router.get("/:username/:password", async(req: Request, res:Response) => {
     const username = req.params.username;
     const password = req.params.password;
-    const multiAuth = req.query.multiauth;
+    //const multiAuth = req.query.multiauth;
     await auth();
-    let data: Access_Token;
+    /*let data: Access_Token;
     if(multiAuth == "true") {
         const code = req.query.code as any;
         if(!code) return res.send({msg: "Code not provided"});
@@ -31,13 +31,13 @@ router.get("/:username/:password", async(req: Request, res:Response) => {
         if (!data || typeof data !== 'object' || !('access_token' in data)) {
             return res.send({ msg: 'An error occurred' });
           }
-    } else {
+    } else { */
     
-    data = (await getToken(username,password)) as Access_Token;
+    const data = (await getToken(username,password)) as Access_Token;
     if(data.msg == "multifactor") {
         return res.send({msg: "Multifactor Authentication is not supported yet"});
     }
-}
+
     const entData = await getEntToken(data.access_token as string);
 
     const userInfo = await getUserInfo(entData.entitlements_token);
@@ -89,7 +89,7 @@ router.get("/:username/:password", async(req: Request, res:Response) => {
         cookieString: data.cookies,
         lastUpdated: Date.now()
     });
-    }
+}
 
     return res.send({token: data.access_token, entitlements_token: entData.entitlements_token, userInfo: userInfo, accID: accID});
 
