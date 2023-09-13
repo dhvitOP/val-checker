@@ -18,7 +18,7 @@ interface Access_Token {
     msg: string;
 }
 
-router.get("/:username/:password", async(req: Request, res:Response) => {
+router.get("/:username/:password", global.checkAuth, async(req: Request, res:Response) => {
     const username = req.params.username;
     const password = req.params.password;
     //const multiAuth = req.query.multiauth;
@@ -91,7 +91,18 @@ router.get("/:username/:password", async(req: Request, res:Response) => {
     });
 }
 
-    return res.send({token: data.access_token, entitlements_token: entData.entitlements_token, userInfo: userInfo, accID: accID});
+    return res.send({token: data.access_token, 
+        entitlements_token: entData.entitlements_token, 
+        accID: accID,
+        id:username,
+        email_verified:userInfo.email_verified,
+        phone_verified:userInfo.phone_number_verified,
+        puuid:userInfo.sub,
+        country:userInfo.country,
+        region:region,
+        username:userInfo.acct.game_name,
+        tag:userInfo.acct.tag_line,
+    });
 
 });
 export default router;

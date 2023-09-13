@@ -12,7 +12,7 @@ interface ReAuthData {
   }
   
 
-router.get("/", async(req: Request, res: Response) => {
+router.get("/", global.checkAuth, async(req: Request, res: Response) => {
     const accID = req.query.accID;
     const data = await (accSchema as any).findOne({accID:accID});
     if(!data) return res.send({msg:"Account not found"});

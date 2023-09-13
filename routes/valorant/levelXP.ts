@@ -6,7 +6,7 @@ import axios from 'axios';
 import { apiUrl } from '../../constants/config.json';
 import loadoutSchema from "../../database/schemas/loadout";
 
-router.get("/", async(req: Request, res: Response) => {
+router.get("/", global.checkAuth,async(req: Request, res: Response) => {
     const accID = req.query.accID;
     if(!accID) return res.send({msg: "Please provide an account ID"});
     const acc = await (accSchema as any).findOne({accID:accID});

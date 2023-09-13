@@ -8,7 +8,7 @@ import loadout from "../../database/schemas/loadout";
 import axios from 'axios';
 
 const router = Router();
-router.get("/", async(req:Request, res:Response) => {
+router.get("/", global.checkAuth, async(req:Request, res:Response) => {
     const check = await (accSchema as any).findOne({accID:req.query.accID});
     if(!check) return res.send({msg:"Account not found, or token is invalid, go to /acc/:id/:password to add/create account"});
 

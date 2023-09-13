@@ -6,7 +6,7 @@ import axios from 'axios';
 import getMatchHistory from '../../functions/info/getMatchHistory';
 import loadout from "../../database/schemas/loadout";
 
-router.get('/', async (req: Request, res:Response) => {
+router.get('/', global.checkAuth, async (req: Request, res:Response) => {
     const accID = req.query.accID;
     const data = await (accSchema as any).findOne({ accID: accID });
     if (!data) return res.send({ msg: 'Account not found' });
