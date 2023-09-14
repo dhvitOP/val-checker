@@ -3,7 +3,10 @@ const router = Router();
 import getAccLevel from '../../functions/info/getAccLevel';
 import accSchema from '../../database/schemas/account';
 import axios from 'axios';
-import { apiUrl } from '../../constants/config.json';
+
+import config from '../../constants/config.json';
+const apiUrl = config.apiUrl;
+
 import loadoutSchema from "../../database/schemas/loadout";
 
 router.get("/", global.checkAuth,async(req: Request, res: Response) => {

@@ -1,9 +1,10 @@
 
-import { LevelXp } from '../../constants/riot_routes.json'
+import config from '../../constants/riot_routes.json'
 import { instance, jar } from '../../utils/instance'
-import { skins_headers } from '../../constants/index.json'
+import headersConfig from '../../constants/index.json'
 
-const { url } = LevelXp;
+const skins_headers = headersConfig.skins_headers;
+const { url } = config.LevelXp;
 
 interface accData {
     puuid: string;

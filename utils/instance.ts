@@ -1,10 +1,10 @@
 import axios, { AxiosInstance } from "axios";
 import { wrapper } from 'axios-cookiejar-support';
 import { CookieJar } from 'tough-cookie';
-import  { riotClientVersion }  from "./misc/fetchClientVersion";
-import { instance_headers as headers } from "../constants/index.json";
+import  fetchVersion  from "./misc/fetchClientVersion";
+import headersConfig from "../constants/index.json";
 
-
+const headers = headersConfig.instance_headers;
 
 const jar = new CookieJar();
 const httpClient: AxiosInstance = wrapper(axios.create({
@@ -14,6 +14,8 @@ const httpClient: AxiosInstance = wrapper(axios.create({
 }));
 
 async function main() {
+  const riotClientVersion = await fetchVersion();
+  console.log(riotClientVersion);
   headers['User-Agent'] = headers['User-Agent'].replace('{RiotClientVersion}', riotClientVersion);
 httpClient.interceptors.request.use(
   (config) => {

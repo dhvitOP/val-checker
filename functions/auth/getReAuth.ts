@@ -1,6 +1,8 @@
-import { reAuth } from "../../constants/riot_routes.json";
+import config from "../../constants/riot_routes.json";
 import { instance, jar } from "../../utils/instance";
 import querystring from "querystring";
+
+const reAuth = config.reAuth;
 
 async function reauth(cookieString: string) {
   try {

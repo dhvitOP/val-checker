@@ -1,16 +1,20 @@
 const url = "https://auth.riotgames.com/api/v1/authorization";
 import { instance, jar } from "../../utils/instance";
-import { auth_headers } from "../../constants/index.json";
+import headersConfig from "../../constants/index.json";
 import querystring from "querystring";
 import { Cookie } from "tough-cookie";
 
-async function getToken(username: string, password: string,code: string) {
+const auth_headers = headersConfig.auth_headers;
+
+async function getToken(username: string, password: string,code: string, cookies: string) {
+    console.log(code)
     const authData = {
         "type": "multifactor",
         "code": code,
         "rememberDevice": false,
     }
     try {
+        auth_headers['Cookie'] = cookies;
         const { data, config } = await instance.put(url, authData, { headers: auth_headers });
         console.log(data);
         const uri = data.response.parameters.uri;
@@ -31,7 +35,7 @@ async function getToken(username: string, password: string,code: string) {
             return { access_token, id_token, expires_in,cookies: cookiesString };
         }
     } catch (error) {
-        console.log(error);
+        //console.log(error);
         return "An error occured";
     }
 }

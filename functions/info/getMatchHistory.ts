@@ -1,9 +1,10 @@
 
-import { matchHistory } from "../../constants/riot_routes.json";
+import config from "../../constants/riot_routes.json";
 import { instance, jar } from "../../utils/instance";
-import { skins_headers } from "../../constants/index.json";
+import headersConfig from "../../constants/index.json";
 
-const { url } = matchHistory;
+const skins_headers = headersConfig.skins_headers;
+const { url } = config.matchHistory;
 
 interface accData {
     puuid: string;

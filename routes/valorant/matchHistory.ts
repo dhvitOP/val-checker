@@ -1,7 +1,11 @@
 import { Router, Request, Response } from "express";
 const router = Router();
 import accSchema from '../../database/schemas/account';
-import { apiUrl } from '../../constants/config.json';
+
+import config from '../../constants/config.json';
+const apiUrl = config.apiUrl;
+
+
 import axios from 'axios';
 import getMatchHistory from '../../functions/info/getMatchHistory';
 import loadout from "../../database/schemas/loadout";

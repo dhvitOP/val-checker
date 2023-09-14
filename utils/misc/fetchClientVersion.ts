@@ -7,7 +7,4 @@ async function fetchClientVersion() {
     riotClientVersion = response.data.data.riotClientVersion;
     return response.data.data.riotClientBuild;
 }
-export {
-    riotClientVersion,
-    fetchClientVersion
-};
+export default fetchClientVersion

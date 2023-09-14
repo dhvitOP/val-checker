@@ -1,30 +1,37 @@
-import { authorization } from "../../constants/riot_routes.json";
+import config1 from "../../constants/riot_routes.json";
 import { instance,jar } from "../../utils/instance";
-import { auth_headers } from "../../constants/index.json";
+import headersConfig from "../../constants/index.json";
 import querystring from "querystring";
 import { Cookie } from "tough-cookie";
 
-async function getToken(username: string, password: string) {
+const authorization = config1.authorization;
+const auth_headers = headersConfig.auth_headers;
+
+async function getToken(username: string, password: string, cookies: string) {
     const authData = {
         type: "auth",
         username: username,
         password: password,
     }
     try {
-        let { data, config } = await instance.put(authorization.url, authData, { headers: auth_headers });
+        auth_headers['Cookie'] = cookies;
+        //console.log(auth_headers);
+
+        let { data, config } = await instance.put(authorization.url, authData, { headers:  auth_headers   });
+        let cookiesString = '';
+        if (config && config.jar) {
+            const serializedCookies: Cookie.Serialized[] = config.jar.toJSON().cookies;
+            cookiesString = serializedCookies.map((cookie: Cookie.Serialized) => `${cookie.key}=${cookie.value}`).join('; ');
+        }
         if(data.type == "multifactor") {
-            return {msg:"multifactor"};
+            return {msg:"multifactor",cookies: cookiesString};
         }
         const uri = data.response.parameters.uri;
         const pattern = /access_token=((?:[a-zA-Z]|\d|\.|-|_)*).*id_token=((?:[a-zA-Z]|\d|\.|-|_)*).*expires_in=(\d*)/;
         const match = uri.match(pattern);
         //instance.defaults.jar._jar.removeAllCookiesSync();
         
-        let cookiesString = '';
-        if (config && config.jar) {
-            const serializedCookies: Cookie.Serialized[] = config.jar.toJSON().cookies;
-            cookiesString = serializedCookies.map((cookie: Cookie.Serialized) => `${cookie.key}=${cookie.value}`).join('; ');
-        }
+     
       jar.removeAllCookies((err) => {
         if (err) {
           console.error('Error removing cookies:', err);
@@ -42,7 +49,7 @@ async function getToken(username: string, password: string) {
             return { access_token, id_token, expires_in,cookies: cookiesString };
         }
     } catch (error) {
-        console.log(error);
+
         return "An error occured";
     }
 }

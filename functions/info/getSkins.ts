@@ -1,6 +1,9 @@
-import { Skins } from '../../constants/riot_routes.json';
+import config from '../../constants/riot_routes.json';
 import { instance,jar } from '../../utils/instance';
-import { skins_headers, data } from '../../constants/index.json';
+import headersConfig from '../../constants/index.json';
+
+const skins_headers = headersConfig.skins_headers;
+const Skins = config.Skins;
 
 async function getSkins(token: string,ent_token: string,puuid: string,region: string) {
     try { 

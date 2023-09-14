@@ -1,6 +1,9 @@
-import { data } from "../../constants/skins.json";
-import { data as storedSprays } from "../../constants/sprays.json";
-const storedSkins = data;
+import skinsData from "../../constants/skins.json";
+import spraysData from "../../constants/sprays.json";
+
+const storedSprays = spraysData.data;
+const storedSkins = skinsData.data;
+
 interface SkinData {
     uuid: string;
     name: string;

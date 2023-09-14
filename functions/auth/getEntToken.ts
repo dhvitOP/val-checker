@@ -1,6 +1,9 @@
-import { Entitlement } from "../../constants/riot_routes.json";
-import { token_headers, data } from "../../constants/index.json";
+import config1 from "../../constants/riot_routes.json";
+import headersConfig from "../../constants/index.json";
 import { instance } from "../../utils/instance";
+
+const Entitlement = config1.Entitlement;
+const { token_headers, data } = headersConfig;
 
 async function getEntToken(token: string) {
     try { 

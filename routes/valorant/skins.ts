@@ -1,6 +1,10 @@
 import { Router, Request, Response } from "express";
 import decrypt from '../../utils/api/decrypt';
-import { apiUrl } from '../../constants/config.json';
+
+import config from '../../constants/config.json';
+const apiUrl = config.apiUrl;
+
+
 import accSchema from '../../database/schemas/account';
 import getSkins from '../../functions/info/getSkins';
 import { skinsconverter } from '../../utils/converters/uidconverter';

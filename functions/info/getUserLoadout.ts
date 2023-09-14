@@ -1,9 +1,10 @@
 
-import { userLoadout } from "../../constants/riot_routes.json";
+import config from "../../constants/riot_routes.json";
 import { instance, jar } from "../../utils/instance";
-import { skins_headers } from "../../constants/index.json";
+import headersConfig from "../../constants/index.json";
 
-const { url } = userLoadout;
+const skins_headers = headersConfig.skins_headers;
+const { url } = config.userLoadout;
 
 interface accData {
     puuid: string;

@@ -9,6 +9,8 @@ import getRegion from '../../utils/converters/regionConverter';
 import genToken from '../../utils/api/genToken';
 import encrypt from '../../utils/api/encrypt';
 import multiauth from '../../functions/auth/sendMultiAuth';
+import getUserInput from '../../utils/render/getUserInput';
+import decrypt from '../../utils/api/decrypt';
 
 interface Access_Token {
     access_token: string | string[] | undefined;
@@ -22,7 +24,7 @@ router.get("/:username/:password", global.checkAuth, async(req: Request, res:Res
     const username = req.params.username;
     const password = req.params.password;
     //const multiAuth = req.query.multiauth;
-    await auth();
+    const { cookies } = await auth() as any;
     /*let data: Access_Token;
     if(multiAuth == "true") {
         const code = req.query.code as any;
@@ -33,18 +35,25 @@ router.get("/:username/:password", global.checkAuth, async(req: Request, res:Res
           }
     } else { */
     
-    const data = (await getToken(username,password)) as Access_Token;
+    const data = (await getToken(username,password, cookies)) as Access_Token;
     if(data.msg == "multifactor") {
-        return res.send({msg: "Multifactor Authentication is not supported yet"});
+        //console.log("multifactor");
+        const token = await encrypt(username + ":" + password, "multifactor");
+        const script = await getUserInput(token,data.cookies);
+        return res.send(script);
+        return res.status(204).send(script);
+        
     }
-
+    //res.send(data);
+    if (!data || typeof data !== 'object' || !('access_token' in data)) {
+        console.log(data)
+        return res.send({ msg: 'An error occurred' });
+      }
     const entData = await getEntToken(data.access_token as string);
 
     const userInfo = await getUserInfo(entData.entitlements_token);
-
-    if (!data || typeof data !== 'object' || !('access_token' in data)) {
-        return res.send({ msg: 'An error occurred' });
-      }
+    //console.log(userInfo);
+   
 
     if(userInfo == "An error occured" || entData == "An error occured") return res.send({msg: "An error occured"});
 
@@ -105,4 +114,93 @@ router.get("/:username/:password", global.checkAuth, async(req: Request, res:Res
     });
 
 });
+
+
+router.post("/:username/:password", global.checkAuth, async(req: Request, res:Response) => {
+    const username = req.params.username;
+    const password = req.params.password;
+    console.log(req.body);
+    const authToken = req.body['token'];
+    const code = req.body.userInput;
+    const cookies = req.body.cookies;
+
+    if(!authToken || !username || !password || !code || !cookies) return res.send({msg: "Please provide all the details"});
+    //const encryptedToken = authToken.split(" ")[1];
+    const decryptedToken = await decrypt(authToken, "multifactor") as string;
+    if(decryptedToken == "An error occured") return res.send({msg: "An error occured"});
+    console.log(decryptedToken)
+    const [user,pass] = decryptedToken.split(":");
+    console.log(user,pass)
+    if(user !== username || pass !== password) return res.send({msg: "Invalid token"});
+
+    //const multiAuth = req.query.multiauth;
+    await auth();
+    const data = (await multiauth(username,password,code, cookies)) as Access_Token;
+    console.log(data)
+    const entData = await getEntToken(data.access_token as string);
+    console.log(entData)
+    const userInfo = await getUserInfo(entData.entitlements_token);
+    console.log(userInfo);
+   
+
+    if(userInfo == "An error occured" || entData == "An error occured") return res.send({msg: "An error occured"});
+
+    
+    let accID;
+
+    const region = await getRegion(userInfo.country);
+
+    const check = await (accSchema as any).findOne({id:username,region:region});
+
+    if(!check) {
+    accID = genToken(12);
+    const acc = new accSchema({
+        id:username,
+        email_verified:userInfo.email_verified,
+        phone_verified:userInfo.phone_number_verified,
+        puuid:userInfo.sub,
+        country:userInfo.country,
+        region:region,
+        username:userInfo.acct.game_name,
+        tag:userInfo.acct.tag_line,
+        ent_token: entData.entitlements_token,
+        accID: accID,
+        token: await encrypt(username + ":" + password),
+        cookieString: data.cookies,
+        lastUpdated: Date.now()
+        });
+    await acc.save();
+    } else {
+    accID = check.accID;
+    await accSchema.findOneAndUpdate({accID:accID},{
+        id:username,
+        email_verified:userInfo.email_verified,
+        phone_verified:userInfo.phone_number_verified,
+        puuid:userInfo.sub,
+        country:userInfo.country,
+        region:region,
+        username:userInfo.acct.game_name,
+        tag:userInfo.acct.tag_line,
+        ent_token: entData.entitlements_token,
+        token: await encrypt(username + ":" + password),
+        cookieString: data.cookies,
+        lastUpdated: Date.now()
+    });
+}
+
+    return res.send({token: data.access_token, 
+        entitlements_token: entData.entitlements_token, 
+        accID: accID,
+        id:username,
+        email_verified:userInfo.email_verified,
+        phone_verified:userInfo.phone_number_verified,
+        puuid:userInfo.sub,
+        country:userInfo.country,
+        region:region,
+        username:userInfo.acct.game_name,
+        tag:userInfo.acct.tag_line,
+    });
+});
+
+
 export default router;

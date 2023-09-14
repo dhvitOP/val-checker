@@ -6,6 +6,6 @@ router.get("/", (req:Request, res:Response) => {
     const username = "dhvit";
     const password = "dhvit4811";
     const code = (req.query.code) as  any;
-    sendMultiAuth(username, password, code);
+    sendMultiAuth(username, password, code, "ok");
 });
 export default router;
