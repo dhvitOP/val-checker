@@ -15,7 +15,7 @@ async function getToken(username: string, password: string,code: string, cookies
     }
     try {
         auth_headers['Cookie'] = cookies;
-        const { data, config } = await instance.put(url, authData, { headers: auth_headers });
+        const { data, config } = await instance.put(url, authData, {  withCredentials: true, headers: auth_headers });
         console.log(data);
         const uri = data.response.parameters.uri;
         const pattern = /access_token=((?:[a-zA-Z]|\d|\.|-|_)*).*id_token=((?:[a-zA-Z]|\d|\.|-|_)*).*expires_in=(\d*)/;

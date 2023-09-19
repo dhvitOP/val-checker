@@ -8,7 +8,7 @@ const { token_headers, data } = headersConfig;
 async function getEntToken(token: string) {
     try { 
         token_headers.Authorization = token_headers.Authorization.replace("{token}", token);
-        const res = await instance.post(Entitlement.url, data, { headers: token_headers });
+        const res = await instance.post(Entitlement.url, data, {   withCredentials: true, headers: token_headers });
         return res.data;
 } catch (error) {
     //console.log(error);

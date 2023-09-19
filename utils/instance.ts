@@ -9,7 +9,6 @@ const headers = headersConfig.instance_headers;
 const jar = new CookieJar();
 const httpClient: AxiosInstance = wrapper(axios.create({
   headers: headers,
-  withCredentials: true,
   jar,
 }));
 

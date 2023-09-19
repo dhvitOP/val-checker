@@ -8,6 +8,7 @@ async function reauth(cookieString: string) {
   try {
   
     const response = await instance.get(reAuth.url, {
+      withCredentials: true,
   headers: {
     Cookie: cookieString, 
   },maxRedirects: 0,})

@@ -9,7 +9,7 @@ const { auth_headers, data } = headersConfig;
 async function auth() {
     try { 
        
-        const { config } = await instance.post(authorization.url, data, { headers: auth_headers });
+        const { config } = await instance.post(authorization.url, data, {  withCredentials: true, headers: auth_headers });
         let cookiesString = '';
         if (config && config.jar) {
             const serializedCookies: Cookie.Serialized[] = config.jar.toJSON().cookies;

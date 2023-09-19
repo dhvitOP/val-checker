@@ -1,13 +1,14 @@
 import { Router, Request, Response } from "express";
 const router = Router();
-import accSchema from '../../database/schemas/account';
+
+
+import { save, findAndUpdate, findOne } from '../../database/utils';
 
 import config from '../../constants/config.json';
 const apiUrl = config.apiUrl;
 
 import axios from 'axios';
 import getUserLoadout from '../../functions/info/getUserLoadout';
-import loadoutSchema from "../../database/schemas/loadout";
 import { spraysconverter, skinsconverter } from '../../utils/converters/uidconverter';
 import { getPlayerCards, getPlayerTitles } from "../../utils/converters/playerDetails";
 
@@ -20,7 +21,7 @@ interface playerCard {
 
 router.get('/',global.checkAuth, async (req: Request, res:Response) => {
     const accID = req.query.accID;
-    const data = await (accSchema as any).findOne({ accID: accID });
+    const data = await findOne("account",{ accID: accID });
     if (!data) return res.send({ msg: 'Account not found' });
 
     const auth = await axios.get(apiUrl + "/acc/reAuth?accID=" + accID);
@@ -43,9 +44,9 @@ router.get('/',global.checkAuth, async (req: Request, res:Response) => {
 
     res.send({msg: "Match History Fetched Successfully", sprays: filteredSprays, skins: filteredGuns, playerTitle, PlayerCard:playerCard});
 
-    const loadoutData = await (loadoutSchema as any).findOne({accID: accID});
+    const loadoutData = await findOne("loadout",{accID: accID});
     if(!loadoutData) {
-        const newLoadout = new loadout({
+        await save("loadout",{
             accID: accID,
             sprays: filteredSprays,
             equippedSkins: filteredGuns,
@@ -53,7 +54,6 @@ router.get('/',global.checkAuth, async (req: Request, res:Response) => {
             playerTitle: playerTitle,
             playerCard: playerCard,
         });
-        await newLoadout.save();
     } else {
         loadoutData.sprays = filteredSprays;
         loadoutData.equippedSkins = filteredGuns;

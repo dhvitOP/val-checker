@@ -1,4 +1,22 @@
-import mongoose from 'mongoose'
+import mongoose, { Document, Model } from 'mongoose'
+import { SpeedGooseCacheAutoCleaner } from 'speedgoose';
+
+interface Account extends Document {
+    id: string;
+    username: string;
+    tag: string;
+    region: string;
+    email_verified: boolean;
+    country: string;
+    puuid: string;
+    phone_verified: boolean;
+    accID: string;
+    ent_token: string;
+    token: string;
+    cookieString: string;
+    lastUpdated: number;
+}
+
 let hm = new mongoose.Schema({
     id: { type: String, required: true },
     username: { type: String, required: true },
@@ -14,4 +32,8 @@ let hm = new mongoose.Schema({
     cookieString: { type: String, required: true },
     lastUpdated: { type: Number, required: true },
 });
+
+hm.plugin(SpeedGooseCacheAutoCleaner);
+
+
 export default mongoose.model("account", hm);

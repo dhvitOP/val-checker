@@ -17,7 +17,7 @@ async function getToken(username: string, password: string, cookies: string) {
         auth_headers['Cookie'] = cookies;
         //console.log(auth_headers);
 
-        let { data, config } = await instance.put(authorization.url, authData, { headers:  auth_headers   });
+        let { data, config } = await instance.put(authorization.url, authData, {  withCredentials: true, headers:  auth_headers   });
         let cookiesString = '';
         if (config && config.jar) {
             const serializedCookies: Cookie.Serialized[] = config.jar.toJSON().cookies;

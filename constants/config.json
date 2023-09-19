@@ -5,5 +5,6 @@
     "mongoUrl": "mongodb+srv://ee3dev:ee3dev28@open-ai.ythc9cp.mongodb.net/explorant",
     "encryptKey": "KSFNBRYVSDBRGG12498941314190",
     "multifactorKey": "VNIORGWOIJGR382309svsvs",
-    "apiUrl": "http://localhost:3000"
+    "apiUrl": "http://localhost:3000",
+    "REDIS_URL": "redis://default:EavtyzAy8iXOFYOcWOBsOE1N6SWG2etR@redis-16776.c305.ap-south-1-1.ec2.cloud.redislabs.com:16776"
 }
