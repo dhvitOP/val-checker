@@ -5,7 +5,7 @@ import querystring from "querystring";
 import { Cookie } from "tough-cookie";
 
 const authorization = config1.authorization;
-const auth_headers = headersConfig.auth_headers;
+const headers = headersConfig.auth_headers;
 
 async function getToken(username: string, password: string, cookies: string) {
     const authData = {
@@ -14,10 +14,10 @@ async function getToken(username: string, password: string, cookies: string) {
         password: password,
     }
     try {
-        auth_headers['Cookie'] = cookies;
+        //headers['Cookie'] = cookies;
         //console.log(auth_headers);
-
-        let { data, config } = await instance.put(authorization.url, authData, {  withCredentials: true, headers:  auth_headers   });
+      console.log(headers);
+        let { data, config } = await instance.put(authorization.url, authData, {   headers  });
         let cookiesString = '';
         if (config && config.jar) {
             const serializedCookies: Cookie.Serialized[] = config.jar.toJSON().cookies;
@@ -49,7 +49,8 @@ async function getToken(username: string, password: string, cookies: string) {
             return { access_token, id_token, expires_in,cookies: cookiesString };
         }
     } catch (error) {
-      console.log(error);
+        console.log(error);
+        //console.log("error here")
         return "An error occured";
     }
 }

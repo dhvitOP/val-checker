@@ -3,14 +3,18 @@ import { wrapper } from 'axios-cookiejar-support';
 import { CookieJar } from 'tough-cookie';
 import  fetchVersion  from "./misc/fetchClientVersion";
 import headersConfig from "../constants/index.json";
+import { HttpCookieAgent, HttpsCookieAgent } from 'http-cookie-agent/http';
 
 const headers = headersConfig.instance_headers;
 
 const jar = new CookieJar();
 const httpClient: AxiosInstance = wrapper(axios.create({
   headers: headers,
-  jar,
-}));
+  withCredentials: true,
+  jar
+}))
+
+
 
 async function main() {
   const riotClientVersion = await fetchVersion();
