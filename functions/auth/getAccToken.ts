@@ -49,7 +49,7 @@ async function getToken(username: string, password: string, cookies: string) {
             return { access_token, id_token, expires_in,cookies: cookiesString };
         }
     } catch (error) {
-
+      console.log(error);
         return "An error occured";
     }
 }
