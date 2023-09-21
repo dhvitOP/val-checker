@@ -1,5 +1,5 @@
 import mongoose, { Document, Model } from 'mongoose'
-import { SpeedGooseCacheAutoCleaner } from 'speedgoose';
+//import { SpeedGooseCacheAutoCleaner } from 'speedgoose';
 
 interface Account extends Document {
     id: string;
@@ -33,7 +33,7 @@ let hm = new mongoose.Schema({
     lastUpdated: { type: Number, required: true },
 });
 
-hm.plugin(SpeedGooseCacheAutoCleaner);
+//hm.plugin(SpeedGooseCacheAutoCleaner);
 
 
 export default mongoose.model("account", hm);

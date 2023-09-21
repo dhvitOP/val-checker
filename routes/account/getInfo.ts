@@ -24,7 +24,7 @@ router.get("/:username/:password", global.checkAuth, async (req: Request, res: R
     const username = req.params.username;
     const password = req.params.password;
     //const multiAuth = req.query.multiauth;
-    const { cookies } = await auth() as any;
+    const cookies  = await auth() as any;
     /*let data: Access_Token;
     if(multiAuth == "true") {
         const code = req.query.code as any;
@@ -116,7 +116,7 @@ router.get("/:username/:password", global.checkAuth, async (req: Request, res: R
 router.post("/:username/:password", global.checkAuth, async (req: Request, res: Response) => {
     const username = req.params.username;
     const password = req.params.password;
-    console.log(req.body);
+    
     const authToken = req.body['token'];
     const code = req.body.userInput;
     const cookies = req.body.cookies;
@@ -125,19 +125,19 @@ router.post("/:username/:password", global.checkAuth, async (req: Request, res: 
     //const encryptedToken = authToken.split(" ")[1];
     const decryptedToken = await decrypt(authToken, "multifactor") as string;
     if (decryptedToken == "An error occured") return res.send({ msg: "An error occured" });
-    console.log(decryptedToken)
+    
     const [user, pass] = decryptedToken.split(":");
-    console.log(user, pass)
+    
     if (user !== username || pass !== password) return res.send({ msg: "Invalid token" });
 
     //const multiAuth = req.query.multiauth;
     await auth();
     const data = (await multiauth(username, password, code, cookies)) as Access_Token;
-    console.log(data)
+    
     const entData = await getEntToken(data.access_token as string);
-    console.log(entData)
+    
     const userInfo = await getUserInfo(entData.entitlements_token);
-    console.log(userInfo);
+    
 
 
     if (userInfo == "An error occured" || entData == "An error occured") return res.send({ msg: "An error occured" });

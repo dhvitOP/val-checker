@@ -1,7 +1,7 @@
 import { Router, Request, Response } from "express";
 const router = Router();
 
-import { save, findAndUpdate, findOne } from '../../database/utils';
+import { save, findOne } from '../../database/utils';
 
 import config from '../../constants/config.json';
 const apiUrl = config.apiUrl;

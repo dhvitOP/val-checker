@@ -1,5 +1,5 @@
 import mongoose from 'mongoose'
-import { SpeedGooseCacheAutoCleaner } from 'speedgoose';
+//import { SpeedGooseCacheAutoCleaner } from 'speedgoose';
 
 let hm = new mongoose.Schema({
     accID: { type: String, required: true },
@@ -11,6 +11,6 @@ let hm = new mongoose.Schema({
     equippedSkins: { type: Object, required: false },
 });
 
-hm.plugin(SpeedGooseCacheAutoCleaner);
+//hm.plugin(SpeedGooseCacheAutoCleaner);
 
 export default mongoose.model("loadout", hm);

@@ -1,5 +1,5 @@
 import { userPenalty } from "../../constants/riot_routes.json";
-import { instance, jar } from "../../utils/instance";
+import { instance } from "../../utils/instance";
 import { skins_headers } from "../../constants/index.json";
 
 const { url } = userPenalty;
@@ -19,12 +19,8 @@ async function getPenalties(accData: accData) {
         
         const res = await instance.get(url.replace('{region}',accData.region.toLowerCase()), { headers: skins_headers });
         
-        jar.removeAllCookies();
         return res.data.Penalties;
 } catch (error) {
-    console.log(error.response);
-    console.log(skins_headers);
-    jar.removeAllCookies();
     return "An error occured";
 }
 }

@@ -1,13 +1,12 @@
 const url = "https://auth.riotgames.com/api/v1/authorization";
-import { instance, jar } from "../../utils/instance";
+import { instance } from "../../utils/instance";
 import headersConfig from "../../constants/index.json";
 import querystring from "querystring";
-import { Cookie } from "tough-cookie";
 
 const auth_headers = headersConfig.auth_headers;
 
 async function getToken(username: string, password: string,code: string, cookies: string) {
-    console.log(code)
+    
     const authData = {
         "type": "multifactor",
         "code": code,
@@ -15,24 +14,25 @@ async function getToken(username: string, password: string,code: string, cookies
     }
     try {
         auth_headers['Cookie'] = cookies;
-        const { data, config } = await instance.put(url, authData, {  withCredentials: true, headers: auth_headers });
-        console.log(data);
+        const { data, headers } = await instance.put(url, authData, {  withCredentials: true, headers: auth_headers });
+        
         const uri = data.response.parameters.uri;
         const pattern = /access_token=((?:[a-zA-Z]|\d|\.|-|_)*).*id_token=((?:[a-zA-Z]|\d|\.|-|_)*).*expires_in=(\d*)/;
         const match = uri.match(pattern);
-        let cookiesString = '';
-        if (config && config.jar) {
+        
+        const cookiesHeader = headers['Set-Cookie'] || headers['set-cookie'];
+        const cookieString: string = cookiesHeader.map((cookie: string) => cookie.split(';')[0]).join('; ');
+        /*if (config && config.jar) {
             const serializedCookies: Cookie.Serialized[] = config.jar.toJSON().cookies;
             cookiesString = serializedCookies.map((cookie: Cookie.Serialized) => `${cookie.key}=${cookie.value}`).join('; ');
-        }
-        jar.removeAllCookies()
+        }*/
         if (match) {
             const fragment = uri.split('#')[1]; 
             const queryParams = querystring.parse(fragment);
             const access_token = queryParams.access_token;
             const id_token = queryParams.id_token;
             const expires_in = match[3];
-            return { access_token, id_token, expires_in,cookies: cookiesString };
+            return { access_token, id_token, expires_in,cookies: cookieString };
         }
     } catch (error) {
         //console.log(error);

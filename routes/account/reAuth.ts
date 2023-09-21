@@ -27,6 +27,7 @@ router.get("/", global.checkAuth, async(req: Request, res: Response) => {
         typeof reAuthData !== 'object' ||
         !('access_token' in reAuthData)
       ) {
+        console.log(reAuthData)
         return res.send({ msg: 'An error occurred' });
       }
     

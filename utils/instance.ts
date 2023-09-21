@@ -1,18 +1,15 @@
 import axios, { AxiosInstance } from "axios";
-import { wrapper } from 'axios-cookiejar-support';
-import { CookieJar } from 'tough-cookie';
 import  fetchVersion  from "./misc/fetchClientVersion";
 import headersConfig from "../constants/index.json";
-import { HttpCookieAgent, HttpsCookieAgent } from 'http-cookie-agent/http';
 
 const headers = headersConfig.instance_headers;
 
-const jar = new CookieJar();
-const httpClient: AxiosInstance = wrapper(axios.create({
+const httpClient: AxiosInstance = axios.create({
   headers: headers,
   withCredentials: true,
-  jar
-}))
+  timeout: 6000
+
+})
 
 
 
@@ -32,6 +29,5 @@ httpClient.interceptors.request.use(
 }
 main();
 export {
-  httpClient as instance,
-  jar,
+  httpClient as instance
 };

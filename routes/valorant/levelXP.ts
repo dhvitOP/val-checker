@@ -1,7 +1,7 @@
 import { Router, Request, Response } from "express";
 const router = Router();
 import getAccLevel from '../../functions/info/getAccLevel';
-import { save, findAndUpdate, findOne } from '../../database/utils';
+import { save, findOne } from '../../database/utils';
 import axios from 'axios';
 
 import config from '../../constants/config.json';

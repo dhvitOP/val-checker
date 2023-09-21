@@ -5,7 +5,7 @@ import config from '../../constants/config.json';
 const apiUrl = config.apiUrl;
 
 
-import { save, findAndUpdate, findOne } from '../../database/utils';
+import { save, findOne } from '../../database/utils';
 
 import getSkins from '../../functions/info/getSkins';
 import { skinsconverter } from '../../utils/converters/uidconverter';
@@ -17,8 +17,6 @@ router.get("/", global.checkAuth, async(req:Request, res:Response) => {
     if(!check) return res.send({msg:"Account not found, or token is invalid, go to /acc/:id/:password to add/create account"});
 
 
-    const idpass = await decrypt(check.token);
-    if(idpass == "An error occured") return res.send({msg: "An error occured"});
 
     const auth = await axios.get(apiUrl + "/acc/reAuth?accID=" + req.query.accID);
     if(auth.data.err == "cookie_expired") return res.send({msg: "Cookie Expired, Go to /acc/:id/:password to reAuth", err: "cookie_expired"});
