@@ -5,32 +5,34 @@ import querystring from "querystring";
 const reAuth = config.reAuth;
 
 async function reauth(cookieString: string) {
+  
+  let redirectURL: string | undefined;
   try {
+    
     const response = await instance.get(reAuth.url, {
       withCredentials: true,
       headers: {
         Cookie: cookieString,
-      }, maxRedirects: 0, timeout: 2500
+      }, timeout: 5000,
+      beforeRedirect: (options) => {
+        redirectURL = options.href;
+      }
     })
     if (response.headers.location) {
-      const redirectURL = response.headers.location;
+      redirectURL = response.headers.location;
       return extractToken(redirectURL);
     } else {
       return "An error occured + 1";
     }
   } catch (error: any) {
+    
+    if(redirectURL != "" || redirectURL != undefined) {
+      return extractToken(redirectURL!);
+    }
       if (error.response) {
-      
-        
-        console.log(error.response)
-        /*if(error.response.href.includes("access_token")) {
-          console.log("XD")
-          const redirectURL = error.response.headers.location;
-          return extractToken(redirectURL);
-        }*/
         if (error.response.status == 303) {
 
-          const redirectURL = error.response.headers.location;
+          redirectURL = error.response.headers.location;
           return extractToken(redirectURL);
         } else {
           return "An error occured + 2";
