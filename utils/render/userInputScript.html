@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Input Form</title>
+</head>
+<body>
+    <h1>2-Factor-Authentication Required</h1>
+    <form id="userInputForm">
+        <label for="userInput">Code:</label>
+        <input type="text" id="userInput" name="userInput" required>
+        <button type="submit">Submit</button>
+    </form>
+    <body>
+        <p>
+            The response: <span id="response"></span>
+        </p>
+    </body>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const form = document.getElementById('userInputForm');
+            form.addEventListener('submit', async (event) => {
+                event.preventDefault();
+                
+                const userInput = document.getElementById('userInput').value;
+
+                try {
+                    const response = await fetch(window.location, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({ userInput, token:'{token}', cookies: '{cookies}' })
+                    });
+
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+
+                    const data = await response.json();
+                    const elem = document.getElementById('response');
+                     // Display the response from the server
+                    elem.innerHTML = JSON.stringify(data);
+
+                } catch (error) {
+                    console.error('Error:', error);
+                }
+            });
+        });
+    </script>
+</body>
+</html>
