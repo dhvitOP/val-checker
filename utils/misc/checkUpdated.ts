@@ -1,6 +1,6 @@
-import cachedTime from '../../index';
+import  index from '../../index';
 async function checkUpdated(date: Number) {
-    if(date < cachedTime) {
+    if(date < index.time) {
       return false;
     }
     return true;

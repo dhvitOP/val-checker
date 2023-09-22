@@ -1,6 +1,6 @@
-import { Router, Request, Response } from "express";
-const router = Router();
-router.get("/", (req:Request, res:Response) => {
-    res.send("Hello World!");
-    });
+import { Hono,Context } from "hono";
+const router = new Hono();
+router.get("/", (c:Context) => {
+    return c.json("Hello World!");
+});
 export default router;
