@@ -4,6 +4,7 @@ import reAuth from '../../functions/auth/getReAuth';
 import { save, findAndUpdate, findOne } from '../../database/utils';
 import getEntToken from '../../functions/auth/getEntToken';
 import checkUpdated from '../../utils/misc/checkUpdated';
+import { startTime, endTime } from "hono/timing";
 
 interface ReAuthData {
     access_token: string | string[] | undefined;
@@ -21,7 +22,7 @@ router.get("/:accID", global.checkAuth, async(c:Context) => {
     if(updated == false) {
         return c.json({msg:"Cookie Expired, Go to /acc/:id/:password to reAuth", err: "cookie_expired"});
     }
-    
+    startTime(c, "Re-Authenticating");
     const reAuthData = (await reAuth(data.cookieString)) as ReAuthData;
     if (
         !reAuthData ||
@@ -38,6 +39,7 @@ router.get("/:accID", global.checkAuth, async(c:Context) => {
     data.token = reAuthData.access_token;
     data.ent_token = entData.entitlements_token;
     await data.save();
+    endTime(c, "Re-Authenticating");
     return c.json({msg: "ReAuthed successfully", data: {token: reAuthData.access_token, ent_token: entData.entitlements_token}});
 });
 export default router;

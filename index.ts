@@ -4,6 +4,7 @@ import contactWebsite from "./utils/misc/contactWebsite";
 import database from "./database/connect";
 import routes from "./constants/routes.json";
 import { prettyJSON } from 'hono/pretty-json'
+import { timing } from 'hono/timing'
 
 const { port, websiteUrl } = config;
 
@@ -13,6 +14,7 @@ const app: Hono = new Hono({ strict: false });
 database();
 
 app.use('*', prettyJSON())
+app.use('*', timing())
 
 setTimeout(async () => {
   global.checkAuth = async function(c:Context,next:Next) {
@@ -28,7 +30,7 @@ setTimeout(async () => {
     //console.log(`Loaded ${property} route`);
   }
   const routesCount = Object.keys(routes).length;
-
+  
   app.notFound((c) => {
     return c.text(' 404 Route Not Found', 404)
   })

@@ -1,5 +1,8 @@
 import { Context, Hono, Next } from "hono";
+import { endTime, startTime, timing } from 'hono/timing'
+
 const router = new Hono();
+
 import auth from '../../functions/auth/readyToken';
 import getToken from '../../functions/auth/getAccToken';
 import getEntToken from '../../functions/auth/getEntToken';
@@ -34,7 +37,7 @@ router.get("/:username/:password", global.checkAuth, async (c: Context, next:Nex
             return c.json({ msg: 'An error occurred' });
           }
     } else { */
-
+    startTime(c, "Getting_Access_Token");
     const data = (await getToken(username, password, cookies)) as Access_Token;
     if (data.msg == "multifactor") {
         //console.log("multifactor");
@@ -44,20 +47,24 @@ router.get("/:username/:password", global.checkAuth, async (c: Context, next:Nex
         //return res.status(204).send(script);
 
     }
+    endTime(c, "Getting_Access_Token");
     //c.json(data);
     if (!data || typeof data !== 'object' || !('access_token' in data)) {
         console.log(data)
         return c.json({ msg: 'An error occurred' });
     }
+    startTime(c, "Getting_Stuff_from_Riot");
     const entData = await getEntToken(data.access_token as string);
 
     const userInfo = await getUserInfo(entData.entitlements_token);
     //console.log(userInfo);
-
+    endTime(c, "Getting_Stuff_from_Riot");
 
     if (userInfo == "An error occured" || entData == "An error occured") return c.json({ msg: "An error occured" });
 
     const region = await getRegion(userInfo.country);
+
+    startTime(c, "Saving_to_Database");
 
     const check = await findOne("account", { id: username, region: region });
 
@@ -97,6 +104,7 @@ router.get("/:username/:password", global.checkAuth, async (c: Context, next:Nex
             lastUpdated: Date.now()
         });
     }
+    endTime(c, "Saving_to_Database");
     return c.json({
         token: data.access_token,
         entitlements_token: entData.entitlements_token,
@@ -133,13 +141,14 @@ router.post("/:username/:password", global.checkAuth, async (c: Context, next:Ne
 
     //const multiAuth = req.query.multiauth;
     await auth();
+    startTime(c, "Getting_Stuff_from_Riot");
     const data = (await multiauth(username, password, code, cookies)) as Access_Token;
     
     const entData = await getEntToken(data.access_token as string);
     
     const userInfo = await getUserInfo(entData.entitlements_token);
     
-
+    endTime(c, "Getting_Stuff_from_Riot");
 
     if (userInfo == "An error occured" || entData == "An error occured") return c.json({ msg: "An error occured" });
 
@@ -147,6 +156,8 @@ router.post("/:username/:password", global.checkAuth, async (c: Context, next:Ne
     
 
     const region = await getRegion(userInfo.country);
+
+    startTime(c, "Saving_to_Database");
 
     const check = await findOne("account",{ id: username, region: region });
     let accID: string = !check ? genToken(12) : check.accID;
@@ -186,6 +197,7 @@ router.post("/:username/:password", global.checkAuth, async (c: Context, next:Ne
             lastUpdated: Date.now()
         });
     }
+    endTime(c, "Saving_to_Database");
     return c.json({
         token: data.access_token,
         entitlements_token: entData.entitlements_token,
