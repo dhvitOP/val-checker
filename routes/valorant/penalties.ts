@@ -14,7 +14,7 @@ router.get("/", global.checkAuth, async(req:Request, res:Response) => {
     const accID = req.query.accID;
     const data = await findOne("account", { accID: accID });
     if (!data) return res.send({ msg: 'Account not found' });
-    const auth = await axios.get(apiUrl + "/acc/reAuth?accID=" + accID);
+    const auth = await axios.get(apiUrl + "/acc/reAuth/" + accID);
     if(auth.data.err == "cookie_expired") return res.send({msg: "Cookie Expired, Go to /acc/:id/:password to reAuth", err: "cookie_expired"});
     if(!auth.data.data) return res.send({msg: "ID PASS Invalid, maybe password is changed"});
     const { token,ent_token } = auth.data.data;

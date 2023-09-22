@@ -12,13 +12,15 @@ import { skinsconverter } from '../../utils/converters/uidconverter';
 import axios from 'axios';
 
 const router = new Hono();
-router.get("/", global.checkAuth, async(c:Context) => {
-    const check = await findOne("account",{accID:c.req.query('accID')});
+router.get("/:accID", global.checkAuth, async(c:Context) => {
+    const accID = c.req.param('accID');
+
+    const check = await findOne("account",{accID:accID});
     if(!check) return c.json({msg:"Account not found, or token is invalid, go to /acc/:id/:password to add/create account"});
 
 
 
-    const auth = await axios.get(apiUrl + "/acc/reAuth?accID=" + c.req.query('accID'));
+    const auth = await axios.get(apiUrl + "/acc/reAuth/" + accID);
     if(auth.data.err == "cookie_expired") return c.json({msg: "Cookie Expired, Go to /acc/:id/:password to reAuth", err: "cookie_expired"});
     if(!auth.data.data) return c.json({msg: "ID PASS Invalid, maybe password is changed"});
 
@@ -32,10 +34,10 @@ router.get("/", global.checkAuth, async(c:Context) => {
     if(filteredSkins == "An error occured") return c.json({msg: "An error occured"});
 
     
-    const loadoutData = await findOne("loadout",{accID: c.req.query('accID')});
+    const loadoutData = await findOne("loadout",{accID: accID});
     if(!loadoutData) {
         await save("loadout",{
-            accID: c.req.query('accID'),
+            accID: accID,
             skins: filteredSkins
         });
     } else {

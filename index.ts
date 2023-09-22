@@ -22,20 +22,27 @@ setTimeout(async () => {
     await next();
   }
   for (const property in routes) {
-    const routeModule = await import(`./routes/${routes[property] as string}`);
+    let route = routes[property];
+    const routeModule = await import(`./routes/${route.file as string}`);
     app.route(property, routeModule.default); 
-    console.log(`Loaded ${property} route`);
+    //console.log(`Loaded ${property} route`);
   }
+  const routesCount = Object.keys(routes).length;
+
   app.notFound((c) => {
     return c.text(' 404 Route Not Found', 404)
   })
+
+  console.log("List of loaded Routes: ")
   app.showRoutes();
- 
+  console.log("Loaded " + routesCount + " routes");
+  
 
   contactWebsite(websiteUrl);
 }, 1300);
 
+
 const cachedTime: Number = Date.now();
 
 export default { time :cachedTime, port,
-  fetch: app.fetch, } ;
+  fetch: app.fetch, app:app } ;
