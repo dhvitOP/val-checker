@@ -16,8 +16,8 @@ interface accData {
 async function getHistory(accData: accData) {
     try {
         if (accData.region.toLowerCase() == 'latam' || accData.region.toLowerCase() == 'br') accData.region = 'na';
-        skins_headers.Authorization = skins_headers.Authorization.replace("{token}", accData.token);
-        skins_headers['X-Riot-Entitlements-JWT'] = skins_headers['X-Riot-Entitlements-JWT'].replace("{ent_token}", accData.ent_token);
+        skins_headers["Authorization"] = "Bearer " + accData.token
+        skins_headers['X-Riot-Entitlements-JWT'] = accData.ent_token
         const res = await instance.get(url.replace('{puuid}', accData.puuid).replace('{region}',accData.region), { headers: skins_headers });
        
         return res.data.History;

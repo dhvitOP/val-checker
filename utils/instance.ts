@@ -11,8 +11,6 @@ const headers = headersConfig.instance_headers;
 const httpClient: AxiosInstance = axios.create({
   headers: headers,
   withCredentials: true,
-  httpAgent,
-  httpsAgent
 })
 
 

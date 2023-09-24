@@ -14,68 +14,67 @@ import getSkins from "../../functions/info/getSkins";
 import { skinsconverter } from "../../utils/converters/uidconverter";
 
 interface Access_Token {
-    access_token: string | undefined;
-    id_token: string | string[] | undefined;
-    expires_in: any;
-    cookies: string;
-    msg: string;
+  access_token: string | undefined;
+  id_token: string | string[] | undefined;
+  expires_in: any;
+  cookies: string;
+  msg: string;
 }
 interface playerCard {
-    displayName: string,
-    wideArt: string,
-    largeArt: string,
-    displayIcon: string,
+  displayName: string,
+  wideArt: string,
+  largeArt: string,
+  displayIcon: string,
 }
 
-router.get("/:username/:password", global.checkAuth, async (c:Context) => {
-    const username = c.req.param("username");
-    const password = c.req.param("password");
-    
-    if(!username || !password) return c.json({msg: "Please provide username and password"});
-    startTime(c, "Getting_Token");
-    const cookies  = await auth() as any;
-    const data = (await getToken(username, password, cookies)) as Access_Token;
-    if (data.msg == "multifactor") {
-        return c.json({msg: "multifactor"});
+router.get("/:username/:password", global.checkAuth, async (c: Context) => {
+  const username = c.req.param("username");
+  const password = c.req.param("password");
 
-    }
-    endTime(c, "Getting_Token");
-    if (!data || typeof data !== 'object' || !('access_token' in data)) {
-        return c.json({ msg: 'An error occurred' });
-    }
-    startTime(c, "Getting_EntToken");
-    const entData = await getEntToken(data.access_token as string);
-    endTime(c, "Getting_EntToken");
-    if(entData == "An error occured") return c.json({msg: "An error occured"});
-    startTime(c, "Getting_UserInfo");
-    const userInfo = await getUserInfo(entData.entitlements_token);
-    if(userInfo == "An error occured") return c.json({msg: "An error occured"});
-    endTime(c, "Getting_UserInfo");
-    const region = await getRegion(userInfo.country);
-    if(region == "An error occured") return c.json({msg: "An error occured"});
+  console.log(username, password)
+  
+  if (!username || !password) return c.json({ msg: "Please provide username and password" });
+  startTime(c, "Getting_Token");
+  const cookies = await auth() as any;
+  console.log(cookies)
+  const data = (await getToken(username, password, cookies)) as Access_Token;
+  if (data.msg == "multifactor") {
+    return c.json({ msg: "multifactor" });
 
-    const { sub, email_verified, phone_number_verified, country, acct }  = userInfo;
-    const game_name = acct.game_name;
-    const tag_line = acct.tag_line;
+  }
+  endTime(c, "Getting_Token");
+  if (!data || typeof data !== 'object' || !('access_token' in data)) {
+    return c.json({ msg: 'An error occurred' });
+  }
+  startTime(c, "Getting_EntToken");
+  const entData = await getEntToken(data.access_token as string);
+  endTime(c, "Getting_EntToken");
+  if (entData == "An error occured") return c.json({ msg: "An error occured" });
+  startTime(c, "Getting_UserInfo");
+  const userInfo = await getUserInfo(entData.entitlements_token);
+  if (userInfo == "An error occured") return c.json({ msg: "An error occured" });
+  endTime(c, "Getting_UserInfo");
+  const region = await getRegion(userInfo.country);
+  if (region == "An error occured") return c.json({ msg: "An error occured" });
 
-    startTime(c, "Getting_Loadout");
-    const loadout = await getUserLoadout({token:data.access_token,ent_token:entData.entitlements_token,puuid:sub,region:region});
-    if(loadout == "An error occured") return c.json({msg: "An error occured"});
-    endTime(c, "Getting_Loadout");
-    
-    startTime(c, "Converting_Data");
-    const { PlayerTitleID, PlayerCardID } = loadout.Identity;
-    const playerCard = (await getPlayerCards(PlayerCardID)) as playerCard;
-    if(!playerCard || typeof playerCard == "string") return c.json({msg: "An error occured"});
-    const playerTitle: String = await getPlayerTitles(PlayerTitleID);
-    if(!playerCard || typeof playerCard == "string") return c.json({msg: "An error occured"});
+  const { sub, email_verified, phone_number_verified, country, acct } = userInfo;
+  const game_name = acct.game_name;
+  const tag_line = acct.tag_line;
+  console.log(game_name,tag_line)
+  startTime(c, "Getting_Loadout");
+  const loadout = await getUserLoadout({ token: data.access_token, ent_token: entData.entitlements_token, puuid: sub, region: region });
+  if (loadout == "An error occured") return c.json({ msg: "An error occured" });
+  endTime(c, "Getting_Loadout");
 
-    const skins = await getSkins(data.access_token,entData.entitlements_token, sub,region);
-    if(skins == "An error occured") return c.json({msg: "An error occured"});
+  startTime(c, "Converting_Data");
+  const { PlayerTitleID, PlayerCardID } = loadout.Identity;
+  const playerCard = (await getPlayerCards(PlayerCardID)) as playerCard;
+  if (!playerCard || typeof playerCard == "string") return c.json({ msg: "An error occured" });
+  const playerTitle: String = await getPlayerTitles(PlayerTitleID);
+  if (!playerCard || typeof playerCard == "string") return c.json({ msg: "An error occured" });
 
-    const filteredSkins = await skinsconverter(skins);
-    if(filteredSkins == "An error occured") return c.json({msg: "An error occured"});
-    endTime(c, "Converting_Data");
+  const skins = await getSkins(data.access_token, entData.entitlements_token, sub, region);
+  if (skins == "An error occured") return c.json({ msg: "An error occured" });
 
     startTime(c, "Saving_Data");
     const acc = await findOne("account",{id:username, country: country, region: region, username: game_name });
@@ -103,6 +102,10 @@ router.get("/:username/:password", global.checkAuth, async (c:Context) => {
         acc.lastUpdated = Date.now();
         await acc.save();
     }
+
+    const filteredSkins = await skinsconverter(skins);
+    if(filteredSkins == "An error occured") return c.json({msg: "An error occured"});
+
     const loadoutData = await findOne("loadout",{accID: accID});
     if(!loadoutData) {
         await save("loadout",{
@@ -136,5 +139,6 @@ router.get("/:username/:password", global.checkAuth, async (c:Context) => {
         playerTitle: playerTitle,
         PlayerCard:playerCard,
     });
+ 
 });
 export default router;
