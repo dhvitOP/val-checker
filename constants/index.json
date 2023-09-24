@@ -8,20 +8,20 @@
     },
     "instance_headers" : {
         "Content-Type": "application/json",
-        "User-Agent": "RiotClient/{RiotClientVersion} %s (Windows;10;;Professional, x64)"
+        "User-Agent": "RiotClient/72.0.0.360.1382 %s (Windows;10;;Professional, x64)"
     },
     "auth_headers": {
         "Content-Type": "application/json",
-        "User-Agent": "RiotClient/{RiotClientVersion} %s (Windows;10;;Professional, x64)"
+        "User-Agent": "RiotClient/72.0.0.360.1382 %s (Windows;10;;Professional, x64)"
     },
     "token_headers": {
-        "User-Agent": "RiotClient/{RiotClientVersion} %s (Windows;10;;Professional, x64)",
+        "User-Agent": "RiotClient/72.0.0.360.1382 %s (Windows;10;;Professional, x64)",
         "Authorization": "Bearer {token}"
     },
     "skins_headers": {
             "X-Riot-Entitlements-JWT": "{ent_token}",
             "Authorization": "Bearer {token}",
-            "User-Agent": "RiotClient/{RiotClientVersion} %s (Windows;10;;Professional, x64)"
+            "User-Agent": "RiotClient/72.0.0.360.1382 %s (Windows;10;;Professional, x64)"
     },
     "ciphers": [
         "ECDHE-ECDSA-AES128-GCM-SHA256",

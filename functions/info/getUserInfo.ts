@@ -7,7 +7,7 @@ const { url } = config.UserInfo;
 
 async function getInfo(token: string) {
     try {
-        token_headers.Authorization = token_headers.Authorization.replace("{token}", token); 
+        token_headers["Authorization"] = "Bearer " + token
         const res = await instance.post(url, data, { headers: token_headers });
         return res.data;
 } catch (error) {
