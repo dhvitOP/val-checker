@@ -31,12 +31,11 @@ router.get("/:username/:password", global.checkAuth, async (c: Context) => {
   const username = c.req.param("username");
   const password = c.req.param("password");
 
-  console.log(username, password)
   
   if (!username || !password) return c.json({ msg: "Please provide username and password" });
   startTime(c, "Getting_Token");
   const cookies = await auth() as any;
-  console.log(cookies)
+  
   const data = (await getToken(username, password, cookies)) as Access_Token;
   if (data.msg == "multifactor") {
     return c.json({ msg: "multifactor" });
@@ -51,7 +50,7 @@ router.get("/:username/:password", global.checkAuth, async (c: Context) => {
   endTime(c, "Getting_EntToken");
   if (entData == "An error occured") return c.json({ msg: "An error occured" });
   startTime(c, "Getting_UserInfo");
-  const userInfo = await getUserInfo(entData.entitlements_token);
+  const userInfo = await getUserInfo(data.access_token as string);
   if (userInfo == "An error occured") return c.json({ msg: "An error occured" });
   endTime(c, "Getting_UserInfo");
   const region = await getRegion(userInfo.country);
@@ -60,7 +59,6 @@ router.get("/:username/:password", global.checkAuth, async (c: Context) => {
   const { sub, email_verified, phone_number_verified, country, acct } = userInfo;
   const game_name = acct.game_name;
   const tag_line = acct.tag_line;
-  console.log(game_name,tag_line)
   startTime(c, "Getting_Loadout");
   const loadout = await getUserLoadout({ token: data.access_token, ent_token: entData.entitlements_token, puuid: sub, region: region });
   if (loadout == "An error occured") return c.json({ msg: "An error occured" });

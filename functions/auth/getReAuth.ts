@@ -22,6 +22,7 @@ async function reauth(cookieString: string) {
       redirectURL = response.headers.location;
       return extractToken(redirectURL);
     } else {
+      console.log(response.statusText + 1);
       return "An error occured + 1";
     }
   } catch (error: any) {
@@ -35,9 +36,11 @@ async function reauth(cookieString: string) {
           redirectURL = error.response.headers.location;
           return extractToken(redirectURL);
         } else {
+
           return "An error occured + 2";
         }
       } else {
+        console.log(error.response.statusText + 3);
         return "An error occured + 3";
       }
     
@@ -58,6 +61,7 @@ function extractToken(uri: string) {
       return "No pattern found + 4"
     }
   } catch (error) {
+    console.log(error + "5");
     return "An error occured + 5";
   }
 }

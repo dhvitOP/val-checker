@@ -29,11 +29,10 @@ router.get("/:accID", global.checkAuth, async(c:Context) => {
         typeof reAuthData !== 'object' ||
         !('access_token' in reAuthData)
       ) {
-        console.log(reAuthData)
+        console.log(reAuthData + "0")
         return c.json({ msg: 'An error occurred' });
       }
-    
-    const entData = await getEntToken(data.access_token);
+    const entData = await getEntToken(reAuthData.access_token as string);
     if(entData == "An error occured") return c.json({msg: "An error occured"});
     data.lastUpdated = Date.now();
     data.token = reAuthData.access_token;

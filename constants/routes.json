@@ -8,5 +8,6 @@
     "/user/accXP": { "file": "/valorant/levelXP", "method": ["GET"], "auth": true , "responseType": ["json"] } ,
     "/user/matchHistory": { "file": "/valorant/matchHistory", "method": ["GET"], "auth": true , "responseType": ["json"] } ,
     "/user/loadout": { "file": "/valorant/loadout", "method": ["GET"], "auth": true , "responseType": ["json"] },
-    "/acc/getallinfo": {"file": "/account/getallinfo", "method": ["GET"], "auth": true , "responseType": ["json"] } 
+    "/acc/getallinfo": {"file": "/account/getallinfo", "method": ["GET"], "auth": true , "responseType": ["json"] },
+    "/user/penalties": {"file": "/valorant/penalties", "method": ["GET"], "auth": true , "responseType": ["json"] }
 }

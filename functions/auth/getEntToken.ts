@@ -12,7 +12,7 @@ async function getEntToken(token: string) {
     const res = await instance.post(Entitlement.url, data, { withCredentials: true, headers: token_headers });
     return res.data;
   } catch (error) {
-    //console.log(error);
+    console.log(error.response.statusText);
     return "An error occured";
   }
 }

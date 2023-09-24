@@ -1,8 +1,9 @@
-import { userPenalty } from "../../constants/riot_routes.json";
+import riotRoutes from "../../constants/riot_routes.json";
 import { instance } from "../../utils/instance";
-import { skins_headers } from "../../constants/index.json";
+import headers from "../../constants/index.json";
 
-const { url } = userPenalty;
+const { url } = riotRoutes.userPenalty;
+const { skins_headers } = headers;
 
 interface accData {
     puuid: string;
@@ -21,6 +22,7 @@ async function getPenalties(accData: accData) {
         
         return res.data.Penalties;
 } catch (error) {
+    console.log(error.response.statusText);
     return "An error occured";
 }
 }

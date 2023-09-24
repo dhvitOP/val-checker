@@ -14,7 +14,7 @@ async function getSkins(token: string,ent_token: string,puuid: string,region: st
         
         return res.data.Entitlements;
 } catch (error) {
-    console.log(error);
+    console.log(error.response.statusText);
     return "An error occured";
 }
 }

@@ -40,7 +40,7 @@ async function getToken(username: string, password: string, cookies: any) {
       return { access_token, id_token, expires_in, cookies: cookiesString };
     }
   } catch (error) {
-    console.log(error);
+    console.log(error.response.statusText);
     return "An error occured";
   }
 }

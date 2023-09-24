@@ -57,7 +57,7 @@ router.get("/:username/:password", global.checkAuth, async (c: Context, next:Nex
     startTime(c, "Getting_Stuff_from_Riot");
     const entData = await getEntToken(data.access_token as string);
 
-    const userInfo = await getUserInfo(entData.entitlements_token);
+    const userInfo = await getUserInfo(data.access_token as string);
     //console.log(userInfo);
     endTime(c, "Getting_Stuff_from_Riot");
 

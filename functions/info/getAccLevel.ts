@@ -26,7 +26,7 @@ async function getAccLevel(accData: accData) {
             history: res.data.History
         };
     } catch (error) {
-        //console.log(error);
+        console.log(error.response.statusText);
         return "An error occured";
     }
 }

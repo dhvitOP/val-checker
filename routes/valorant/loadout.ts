@@ -68,7 +68,7 @@ router.get('/:accID',global.checkAuth, async (c:Context) => {
         await loadoutData.save();
     }
     endTime(c, "Saving_Data");
-    return c.json({msg: "Match History Fetched Successfully", sprays: filteredSprays, skins: filteredGuns, playerTitle, PlayerCard:playerCard});
+    return c.json({msg: "User's Loadout Fetched Successfully", sprays: filteredSprays, skins: filteredGuns, playerTitle, PlayerCard:playerCard});
 
 });
 export default router;

@@ -22,7 +22,7 @@ async function getHistory(accData: accData) {
        
         return res.data.History;
     } catch (error) {
-        //console.log(error);
+        console.log(error.response.statusText);
         return "An error occured";
     }
 }

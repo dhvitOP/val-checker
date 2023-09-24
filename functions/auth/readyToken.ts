@@ -24,7 +24,7 @@ async function auth() {
         return cookieHeader;
         
 } catch (error) {
-    console.log(error);
+    console.log(error.response.statusText);
     return "An error occured";
 }
 }
