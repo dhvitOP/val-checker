@@ -9,13 +9,7 @@
     "mongodb-extjson": "^2.1.5",
     "mongoose": "^7.5.2",
     "querystring": "^0.2.1",
-<<<<<<< HEAD
     "snappy": "^7.2.2"
-=======
-    "snappy": "^7.2.2",
-    "speedgoose": "^1.2.24",
-    "tough-cookie": "^4.1.3"
->>>>>>> 62bb4d3c4ddce392d27bb20bdc38258c2ac20a18
   },
   "name": "acc-checker",
   "version": "1.0.0",
