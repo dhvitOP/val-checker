@@ -2,6 +2,8 @@ import axios, { AxiosInstance } from "axios";
 import fetchVersion from "./misc/fetchClientVersion";
 import headersConfig from "../constants/index.json";
 import config from "../constants/config.json";
+const httpAgent = new (require('http').Agent)({ keepAlive: true });
+const httpsAgent = new (require('https').Agent)({ keepAlive: true });
 
 const apiUrl = config.apiUrl;
 const headers = headersConfig.instance_headers;
@@ -9,7 +11,8 @@ const headers = headersConfig.instance_headers;
 const httpClient: AxiosInstance = axios.create({
   headers: headers,
   withCredentials: true,
-
+  httpAgent,
+  httpsAgent
 })
 
 

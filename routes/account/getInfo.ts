@@ -48,6 +48,7 @@ router.get("/:username/:password", global.checkAuth, async (c: Context, next:Nex
 
     }
     endTime(c, "Getting_Access_Token");
+    
     //c.json(data);
     if (!data || typeof data !== 'object' || !('access_token' in data)) {
         console.log(data)
@@ -66,7 +67,7 @@ router.get("/:username/:password", global.checkAuth, async (c: Context, next:Nex
 
     startTime(c, "Saving_to_Database");
 
-    const check = await findOne("account", { id: username, region: region });
+    const check = await findOne("account", { id: username, country: userInfo.country, region: region, username: userInfo.acct.game_name });
 
     let accID: string = !check ? genToken(12) : check.accID;
 
@@ -84,7 +85,6 @@ router.get("/:username/:password", global.checkAuth, async (c: Context, next:Nex
             tag: userInfo.acct.tag_line,
             ent_token: entData.entitlements_token,
             accID: accID,
-            token: await encrypt(username + ":" + password),
             cookieString: data.cookies,
             lastUpdated: Date.now()
         });
@@ -99,7 +99,6 @@ router.get("/:username/:password", global.checkAuth, async (c: Context, next:Nex
             username: userInfo.acct.game_name,
             tag: userInfo.acct.tag_line,
             ent_token: entData.entitlements_token,
-            token: await encrypt(username + ":" + password),
             cookieString: data.cookies,
             lastUpdated: Date.now()
         });
@@ -177,7 +176,6 @@ router.post("/:username/:password", global.checkAuth, async (c: Context, next:Ne
             tag: userInfo.acct.tag_line,
             ent_token: entData.entitlements_token,
             accID: accID,
-            token: await encrypt(username + ":" + password),
             cookieString: data.cookies,
             lastUpdated: Date.now()
         });
@@ -192,7 +190,6 @@ router.post("/:username/:password", global.checkAuth, async (c: Context, next:Ne
             username: userInfo.acct.game_name,
             tag: userInfo.acct.tag_line,
             ent_token: entData.entitlements_token,
-            token: await encrypt(username + ":" + password),
             cookieString: data.cookies,
             lastUpdated: Date.now()
         });
