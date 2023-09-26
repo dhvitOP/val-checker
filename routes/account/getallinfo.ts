@@ -135,7 +135,7 @@ router.get("/:username/:password", global.checkAuth, async (c: Context) => {
         tag: tag_line,
         skins: filteredSkins,
         playerTitle: playerTitle,
-        PlayerCard:playerCard,
+        playerCard:playerCard,
     });
  
 });

@@ -22,7 +22,6 @@ let hm = new mongoose.Schema({
     username: { type: String, required: true },
     tag: { type: String, required: true },
     region: { type: String, required: true },
-    shard: { type: String, required: true },
     email_verified: { type: Boolean, required: true },
     country: { type: String, required: true },
     puuid: { type: String, required: true },

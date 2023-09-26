@@ -43,7 +43,7 @@ router.get("/:username/:password", global.checkAuth, async (c: Context, next:Nex
         //console.log("multifactor");
         const token = await encrypt(username + ":" + password, "multifactor");
         const script = await getUserInput(token, data.cookies);
-        return c.json(script);
+        return c.render(script);
         //return res.status(204).send(script);
 
     }
