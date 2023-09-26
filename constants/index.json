@@ -1,10 +1,12 @@
 {
     "data" : {
-        "client_id": "play-valorant-web-prod",
-        "nonce": "1",
-        "redirect_uri": "https://playvalorant.com/opt_in",
+        "acr_values": "urn:riot:bronze",
+        "claims": "",
+        "client_id": "riot-client",
+        "nonce": "oYnVwCSrlS5IHKh7iI16oQ",
+        "redirect_uri": "http://localhost/redirect",
         "response_type": "token id_token",
-        "scope": "account openid"
+        "scope": "openid link ban lol_region"
     },
     "instance_headers" : {
         "Content-Type": "application/json",

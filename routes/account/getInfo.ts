@@ -23,11 +23,11 @@ interface Access_Token {
     msg: string;
 }
 
-router.get("/:username/:password", global.checkAuth, async (c: Context, next:Next) => {
+router.get("/:username/:password", global.checkAuth, async (c: Context, next: Next) => {
     const username = c.req.param("username");
     const password = c.req.param("password");
     //const multiAuth = req.query.multiauth;
-    const cookies  = await auth() as any;
+    const cookies = await auth() as any;
     /*let data: Access_Token;
     if(multiAuth == "true") {
         const code = req.query.code as any;
@@ -48,65 +48,79 @@ router.get("/:username/:password", global.checkAuth, async (c: Context, next:Nex
 
     }
     endTime(c, "Getting_Access_Token");
-    
+
     //c.json(data);
     if (!data || typeof data !== 'object' || !('access_token' in data)) {
         console.log(data)
         return c.json({ msg: 'An error occurred' });
     }
     startTime(c, "Getting_Stuff_from_Riot");
-    const entData = await getEntToken(data.access_token as string);
 
     const userInfo = await getUserInfo(data.access_token as string);
     //console.log(userInfo);
     endTime(c, "Getting_Stuff_from_Riot");
 
-    if (userInfo == "An error occured" || entData == "An error occured") return c.json({ msg: "An error occured" });
+    if (userInfo == "An error occured") return c.json({ msg: "An error occured" });
 
     const region = await getRegion(userInfo.country);
 
     startTime(c, "Saving_to_Database");
 
-    const check = await findOne("account", { id: username, country: userInfo.country, region: region, username: userInfo.acct.game_name });
 
-    let accID: string = !check ? genToken(12) : check.accID;
+    const banned = userInfo.ban.restrictions;
 
-    
+    let accID: string;
+    let entData: string;
 
-    if (!check) {
-        await save("account", {
-            id: username,
-            email_verified: userInfo.email_verified,
-            phone_verified: userInfo.phone_number_verified,
-            puuid: userInfo.sub,
-            country: userInfo.country,
-            region: region,
-            username: userInfo.acct.game_name,
-            tag: userInfo.acct.tag_line,
-            ent_token: entData.entitlements_token,
-            accID: accID,
-            cookieString: data.cookies,
-            lastUpdated: Date.now()
-        });
+    if (banned.length === 0) {
+
+        const check = await findOne("account", { id: username, country: userInfo.country, region: region, username: userInfo.acct.game_name });
+
+        const entDatax = await getEntToken(data.access_token as string);
+        if (entDatax == "An error occured") return c.json({ msg: "An error occured" });
+        let entData = entDatax.entitlements_token;
+
+
+        let accID: string = !check ? genToken(12) : check.accID;
+
+        if (!check) {
+            await save("account", {
+                id: username,
+                email_verified: userInfo.email_verified,
+                phone_verified: userInfo.phone_number_verified,
+                puuid: userInfo.sub,
+                country: userInfo.country,
+                region: region,
+                username: userInfo.acct.game_name,
+                tag: userInfo.acct.tag_line,
+                ent_token: entData,
+                accID: accID,
+                cookieString: data.cookies,
+                lastUpdated: Date.now()
+            });
+        } else {
+            await findAndUpdate("account", { accID: accID }, {
+                id: username,
+                email_verified: userInfo.email_verified,
+                phone_verified: userInfo.phone_number_verified,
+                puuid: userInfo.sub,
+                country: userInfo.country,
+                region: region,
+                username: userInfo.acct.game_name,
+                tag: userInfo.acct.tag_line,
+                ent_token: entData,
+                cookieString: data.cookies,
+                lastUpdated: Date.now()
+            });
+        }
     } else {
-        await findAndUpdate("account", { accID: accID }, {
-            id: username,
-            email_verified: userInfo.email_verified,
-            phone_verified: userInfo.phone_number_verified,
-            puuid: userInfo.sub,
-            country: userInfo.country,
-            region: region,
-            username: userInfo.acct.game_name,
-            tag: userInfo.acct.tag_line,
-            ent_token: entData.entitlements_token,
-            cookieString: data.cookies,
-            lastUpdated: Date.now()
-        });
+        entData = "Account is banned";
+        accID = "Account is banned";
     }
     endTime(c, "Saving_to_Database");
     return c.json({
         token: data.access_token,
-        entitlements_token: entData.entitlements_token,
+        entitlements_token: entData,
         accID: accID,
         id: username,
         email_verified: userInfo.email_verified,
@@ -116,14 +130,17 @@ router.get("/:username/:password", global.checkAuth, async (c: Context, next:Nex
         region: region,
         username: userInfo.acct.game_name,
         tag: userInfo.acct.tag_line,
+        banned: banned.length === 0 ? false : true,
+        banType: banned.length === 0 ? null : banned[0].type,
+        restrictions: banned.length === 0 ? [] : banned
     });
 });
 
 
-router.post("/:username/:password", global.checkAuth, async (c: Context, next:Next) => {
+router.post("/:username/:password", global.checkAuth, async (c: Context, next: Next) => {
     const username = c.req.param("username");
     const password = c.req.param("password");
-    
+
     const body = await c.req.json();
     const authToken = body.authToken;
     const code = body.userInput;
@@ -133,71 +150,87 @@ router.post("/:username/:password", global.checkAuth, async (c: Context, next:Ne
     //const encryptedToken = authToken.split(" ")[1];
     const decryptedToken = await decrypt(authToken, "multifactor") as string;
     if (decryptedToken == "An error occured") return c.json({ msg: "An error occured" });
-    
+
     const [user, pass] = decryptedToken.split(":");
-    
+
     if (user !== username || pass !== password) return c.json({ msg: "Invalid token" });
 
     //const multiAuth = req.query.multiauth;
     await auth();
     startTime(c, "Getting_Stuff_from_Riot");
     const data = (await multiauth(username, password, code, cookies)) as Access_Token;
-    
-    const entData = await getEntToken(data.access_token as string);
-    
-    const userInfo = await getUserInfo(entData.entitlements_token);
-    
+
+
+    const userInfo = await getUserInfo(data.access_token as string);
+
     endTime(c, "Getting_Stuff_from_Riot");
 
-    if (userInfo == "An error occured" || entData == "An error occured") return c.json({ msg: "An error occured" });
+    if (userInfo == "An error occured") return c.json({ msg: "An error occured" });
 
 
-    
+
 
     const region = await getRegion(userInfo.country);
 
+
     startTime(c, "Saving_to_Database");
 
-    const check = await findOne("account",{ id: username, region: region });
-    let accID: string = !check ? genToken(12) : check.accID;
 
-    
 
-    
-    if (!check) {
-        await save("account", {
-            id: username,
-            email_verified: userInfo.email_verified,
-            phone_verified: userInfo.phone_number_verified,
-            puuid: userInfo.sub,
-            country: userInfo.country,
-            region: region,
-            username: userInfo.acct.game_name,
-            tag: userInfo.acct.tag_line,
-            ent_token: entData.entitlements_token,
-            accID: accID,
-            cookieString: data.cookies,
-            lastUpdated: Date.now()
-        });
+
+
+    const banned = userInfo.ban.restrictions;
+
+    let entData: string;
+    let accID: string;
+
+    if (banned.length === 0) {
+        
+
+        const check = await findOne("account", { id: username, region: region });
+        const entDatax = await getEntToken(data.access_token as string);
+        if (entDatax == "An error occured") return c.json({ msg: "An error occured" });
+        let accID: string = !check ? genToken(12) : check.accID;
+        let entData = entDatax.entitlements_token;
+
+        if (!check) {
+            await save("account", {
+                id: username,
+                email_verified: userInfo.email_verified,
+                phone_verified: userInfo.phone_number_verified,
+                puuid: userInfo.sub,
+                country: userInfo.country,
+                region: region,
+                username: userInfo.acct.game_name,
+                tag: userInfo.acct.tag_line,
+                ent_token: entData,
+                accID: accID,
+                cookieString: data.cookies,
+                lastUpdated: Date.now()
+            });
+        } else {
+            await findAndUpdate("account", { accID: accID }, {
+                id: username,
+                email_verified: userInfo.email_verified,
+                phone_verified: userInfo.phone_number_verified,
+                puuid: userInfo.sub,
+                country: userInfo.country,
+                region: region,
+                username: userInfo.acct.game_name,
+                tag: userInfo.acct.tag_line,
+                ent_token: entData,
+                cookieString: data.cookies,
+                lastUpdated: Date.now()
+            });
+        }
     } else {
-        await findAndUpdate("account", { accID: accID }, {
-            id: username,
-            email_verified: userInfo.email_verified,
-            phone_verified: userInfo.phone_number_verified,
-            puuid: userInfo.sub,
-            country: userInfo.country,
-            region: region,
-            username: userInfo.acct.game_name,
-            tag: userInfo.acct.tag_line,
-            ent_token: entData.entitlements_token,
-            cookieString: data.cookies,
-            lastUpdated: Date.now()
-        });
+        entData = "Account is banned";
+        accID = "Account is banned";
     }
     endTime(c, "Saving_to_Database");
     return c.json({
         token: data.access_token,
-        entitlements_token: entData.entitlements_token,
+        entitlements_token: entData,
         accID: accID,
         id: username,
         email_verified: userInfo.email_verified,
@@ -207,6 +240,9 @@ router.post("/:username/:password", global.checkAuth, async (c: Context, next:Ne
         region: region,
         username: userInfo.acct.game_name,
         tag: userInfo.acct.tag_line,
+        banned: banned.length === 0 ? false : true,
+        banType: banned.length === 0 ? null : banned[0].type,
+        restrictions: banned.length === 0 ? [] : banned
     });
 });
 

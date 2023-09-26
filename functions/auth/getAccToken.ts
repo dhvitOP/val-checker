@@ -11,14 +11,15 @@ async function getToken(username: string, password: string, cookies: any) {
   const authData = {
     type: "auth",
     username: username,
-    password: password
+    password: password,
+    language: "en_US"
   }
   //console.log(authData)
   try {
     auth_headers['Cookie'] = cookies;
     let { data, headers } = await instance.put(authorization.url, authData, { headers: auth_headers, withCredentials: true });
 
-
+    //console.log(data)
     const cookiesH = headers['Set-Cookie'] || headers['set-cookie'];
     const cookiesString: string = cookiesH.map((cookie: string) => cookie.split(';')[0]).join('; ');
     if (data.type == "multifactor") {
@@ -40,7 +41,9 @@ async function getToken(username: string, password: string, cookies: any) {
       return { access_token, id_token, expires_in, cookies: cookiesString };
     }
   } catch (error) {
-    console.log(error.response.statusText);
+    //console.log(error);
+    console.log(error.response.data);
+
     return "An error occured";
   }
 }

@@ -20,7 +20,7 @@ async function auth() {
         }
         if(!cookies) return "An error occured";
         const cookieHeader: string = cookies.map((cookie: string) => cookie.split(';')[0]).join('; ');
-
+        //console.log(cookieHeader)
         return cookieHeader;
         
 } catch (error) {
