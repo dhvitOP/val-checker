@@ -72,9 +72,10 @@ router.get("/:username/:password", global.checkAuth, async (c: Context, next: Ne
     let accID: string;
     let entData: string;
 
+    const check = await findOne("account", { id: username, country: userInfo.country, region: region, username: userInfo.acct.game_name });
+
     if (banned.length === 0) {
 
-        const check = await findOne("account", { id: username, country: userInfo.country, region: region, username: userInfo.acct.game_name });
 
         const entDatax = await getEntToken(data.access_token as string);
         if (entDatax == "An error occured") return c.json({ msg: "An error occured" });
@@ -96,7 +97,8 @@ router.get("/:username/:password", global.checkAuth, async (c: Context, next: Ne
                 ent_token: entData,
                 accID: accID,
                 cookieString: data.cookies,
-                lastUpdated: Date.now()
+                lastUpdated: Date.now(),
+                banned:false
             });
         } else {
             await findAndUpdate("account", { accID: accID }, {
@@ -116,6 +118,38 @@ router.get("/:username/:password", global.checkAuth, async (c: Context, next: Ne
     } else {
         entData = "Account is banned";
         accID = "Account is banned";
+        if(!check) {
+            await save("account", {
+                id: username,
+                email_verified: userInfo.email_verified,
+                phone_verified: userInfo.phone_number_verified,
+                puuid: userInfo.sub,
+                country: userInfo.country,
+                region: region,
+                username: userInfo.acct.game_name,
+                tag: userInfo.acct.tag_line,
+                ent_token: entData,
+                accID: accID,
+                cookieString: data.cookies,
+                lastUpdated: Date.now(),
+                banned:true
+            });
+        } else {
+            await findAndUpdate("account", { accID: check.accID }, {
+                id: username,
+                email_verified: userInfo.email_verified,
+                phone_verified: userInfo.phone_number_verified,
+                puuid: userInfo.sub,
+                country: userInfo.country,
+                region: region,
+                username: userInfo.acct.game_name,
+                tag: userInfo.acct.tag_line,
+                ent_token: entData,
+                cookieString: data.cookies,
+                lastUpdated: Date.now(),
+                banned:true
+            });
+        }
     }
     endTime(c, "Saving_to_Database");
     return c.json({
@@ -184,10 +218,12 @@ router.post("/:username/:password", global.checkAuth, async (c: Context, next: N
     let entData: string;
     let accID: string;
 
+    
+    const check = await findOne("account", { id: username, region: region });
+
     if (banned.length === 0) {
         
 
-        const check = await findOne("account", { id: username, region: region });
         const entDatax = await getEntToken(data.access_token as string);
         if (entDatax == "An error occured") return c.json({ msg: "An error occured" });
         let accID: string = !check ? genToken(12) : check.accID;
@@ -226,6 +262,38 @@ router.post("/:username/:password", global.checkAuth, async (c: Context, next: N
     } else {
         entData = "Account is banned";
         accID = "Account is banned";
+        if(!check) {
+            await save("account", {
+                id: username,
+                email_verified: userInfo.email_verified,
+                phone_verified: userInfo.phone_number_verified,
+                puuid: userInfo.sub,
+                country: userInfo.country,
+                region: region,
+                username: userInfo.acct.game_name,
+                tag: userInfo.acct.tag_line,
+                ent_token: entData,
+                accID: accID,
+                cookieString: data.cookies,
+                lastUpdated: Date.now(),
+                banned:true
+            });
+        } else {
+            await findAndUpdate("account", { accID: check.accID }, {
+                id: username,
+                email_verified: userInfo.email_verified,
+                phone_verified: userInfo.phone_number_verified,
+                puuid: userInfo.sub,
+                country: userInfo.country,
+                region: region,
+                username: userInfo.acct.game_name,
+                tag: userInfo.acct.tag_line,
+                ent_token: entData,
+                cookieString: data.cookies,
+                lastUpdated: Date.now(),
+                banned:true
+            });
+        }
     }
     endTime(c, "Saving_to_Database");
     return c.json({

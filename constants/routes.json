@@ -10,5 +10,8 @@
     "/user/loadout": { "file": "/valorant/loadout", "method": ["GET"], "auth": true , "responseType": ["json"] },
     "/acc/getallinfo": {"file": "/account/getallinfo", "method": ["GET"], "auth": true , "responseType": ["json"] },
     "/user/penalties": {"file": "/valorant/penalties", "method": ["GET"], "auth": true , "responseType": ["json"] },
-    "/test": {"file": "/test", "method": ["GET"], "auth": false , "responseType": ["json"]}
+    "/test": {"file": "/test", "method": ["GET"], "auth": false , "responseType": ["json"]},
+    "/user/Rank": {"file": "/valorant/latestRank", "method": ["GET"], "auth": true , "responseType": ["json"]},
+    "/acc/wallet": {"file": "/account/wallet", "method": ["GET"], "auth": true , "responseType": ["json"]}
+
 }

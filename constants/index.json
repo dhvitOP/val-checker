@@ -1,5 +1,5 @@
 {
-    "data" : {
+    "data": {
         "acr_values": "urn:riot:bronze",
         "claims": "",
         "client_id": "riot-client",
@@ -8,7 +8,7 @@
         "response_type": "token id_token",
         "scope": "openid link ban lol_region"
     },
-    "instance_headers" : {
+    "instance_headers": {
         "Content-Type": "application/json",
         "User-Agent": "RiotClient/72.0.0.360.1382 %s (Windows;10;;Professional, x64)"
     },
@@ -21,10 +21,12 @@
         "Authorization": "Bearer {token}"
     },
     "skins_headers": {
-            "X-Riot-Entitlements-JWT": "{ent_token}",
-            "Authorization": "Bearer {token}",
-            "User-Agent": "RiotClient/72.0.0.360.1382 %s (Windows;10;;Professional, x64)"
+        "X-Riot-Entitlements-JWT": "{ent_token}",
+        "Authorization": "Bearer {token}",
+        "User-Agent": "RiotClient/72.0.0.360.1382 %s (Windows;10;;Professional, x64)"
     },
+    "platform": "ew0KCSJwbGF0Zm9ybVR5cGUiOiAiUEMiLA0KCSJwbGF0Zm9ybU9TIjogIldpbmRvd3MiLA0KCSJwbGF0Zm9ybU9TVmVyc2lvbiI6ICIxMC4wLjE5MDQyLjEuMjU2LjY0Yml0IiwNCgkicGxhdGZvcm1DaGlwc2V0IjogIlVua25vd24iDQp9",
+    
     "ciphers": [
         "ECDHE-ECDSA-AES128-GCM-SHA256",
         "ECDHE-ECDSA-CHACHA20-POLY1305",
@@ -36,7 +38,35 @@
         "RSA+AES256",
         "ECDHE+3DES",
         "RSA+3DES"
-        ]
-    
-    
+    ],
+    "ranks": {
+        "0": "Unranked",
+        "1": "Unused1",
+        "2": "Unused2",
+        "3": "Iron 1",
+        "4": "Iron 2",
+        "5": "Iron 3",
+        "6": "Bronz 1",
+        "7": "Bronz 2",
+        "8": "Bronz 3",
+        "9": "Silver 1",
+        "10": "Silver 2",
+        "11": "Silver 3",
+        "12": "Gold 1",
+        "13": "Gold 2",
+        "14": "Gold 3",
+        "15": "Platinum 1",
+        "16": "Platinum 2",
+        "17": "Plantinum 3",
+        "18": "Diamond 1",
+        "19": "Diamond 2",
+        "20": "Diamond 3",
+        "21": "Ascendant 1",
+        "22": "Ascendant 2",
+        "23": "Ascendant 3",
+        "24": "Immortal 1",
+        "25": "Immortal 2",
+        "26": "Immortal 3",
+        "27": "Radiant"
+    }
 }
