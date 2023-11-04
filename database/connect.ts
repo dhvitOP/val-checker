@@ -1,6 +1,5 @@
 import mongoose from "mongoose";
 import config from "../constants/config.json";
-import { applySpeedGooseCacheLayer } from 'speedgoose';
 import fs from "fs";
 import path from "path"
 
