@@ -23,7 +23,6 @@
     "ts-node": "^10.9.1"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node out/index.js",
     "dev": "bun --hot index.ts",
     "build": "tsc --build",
