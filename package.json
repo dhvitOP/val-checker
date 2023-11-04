@@ -12,6 +12,7 @@
     "snappy": "^7.2.2",
     "speedgoose": "^1.2.24",
     "tough-cookie": "^4.1.3",
+    "typescript": "5.2.2",
     "ts-node": "^10.9.1"
   },
   "name": "acc-checker",
@@ -27,7 +28,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node index.ts",
     "dev": "nodemon index.ts",
-    "build": "npm i",
+    "build": "tsc --build",
     "hm": "ts-node index.ts"
   },
   "repository": {
