@@ -9,7 +9,8 @@
     "mongodb-extjson": "^2.1.5",
     "mongoose": "^7.5.2",
     "querystring": "^0.2.1",
-    "snappy": "^7.2.2"
+    "snappy": "^7.2.2",
+    "typescript": "5.2.2"
   },
   "name": "acc-checker",
   "version": "1.0.0",
@@ -23,9 +24,9 @@
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "bun index.ts",
+    "start": "node out/index.js",
     "dev": "bun --hot index.ts",
-    "build": "bun install",
+    "build": "tsc --build",
     "hm": "ts-node index.ts"
   },
   "repository": {
