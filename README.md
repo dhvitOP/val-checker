@@ -15,8 +15,37 @@
 ## Prerequisites and Config requirements
 * **Any NodeJS version above 16 is okay [Download NodeJS](https://nodejs.org/en/download)**
 * **MongoDB url to access database and save account's data is needed [MongoDB atlas](https://www.mongodb.com/atlas/database)**
-* 
+
 
 ## Installation
+**All the commands are ran in the console assumed to be in the root directory of the project**
 ### Node Modules
 * **You can use any package manager such as npm,pnpm or bun. But for the sake of popularity, npm will be used in this guide**
+* ```bash
+  npm install
+  ```
+* This process may take some minutes completely depends on your pkg manager and your internet speed and stability.
+* 
+### Checking and Filling the Configurations
+* **There are configurations of the project in `constants/config.json` file**
+* **Make sure to read the comments and fill the config as per your requirement**
+* 
+### Building the project
+* **You can run `build` script from package.json to build the project and output the result in out directory**
+* ```bash
+  tsc --build
+  ```
+* This command might take some minutes to be completed, so be patient.
+### Starting the Project
+* **You can run `start` script to start using the output files from build or `direct-run`/`dev` script to run it directly without using builds**
+* ```bash
+  npm start
+  ```
+## Some Other things
+**There are server timings built-in and given with the response in headers**<br>
+**Refer to [Hono's Docs](https://hono.dev/middleware/builtin/timing)**
+**Honestly I don't know why i did this**
+
+## NOTICE
+**This is something you'll expect but obviously this is for only educational purposes and doesn't mean to harm or encourage anyone to bring harm to anyone using this tool**
+  
