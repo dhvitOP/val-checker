@@ -1,5 +1,5 @@
 import mongoose, { Document, Model } from 'mongoose'
-import { SpeedGooseCacheAutoCleaner } from 'speedgoose';
+//import { SpeedGooseCacheAutoCleaner } from 'speedgoose';
 
 interface Account extends Document {
     id: string;
@@ -28,12 +28,11 @@ let hm = new mongoose.Schema({
     phone_verified: { type: Boolean, required: true },
     accID: { type: String, required: true },
     ent_token: { type: String, required: true },
-    token: { type: String, required: true },
     cookieString: { type: String, required: true },
     lastUpdated: { type: Number, required: true },
 });
 
-hm.plugin(SpeedGooseCacheAutoCleaner);
+//hm.plugin(SpeedGooseCacheAutoCleaner);
 
 
 export default mongoose.model("account", hm);

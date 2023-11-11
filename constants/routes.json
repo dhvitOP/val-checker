@@ -1,11 +1,17 @@
 {
-    "/": "/index",
-    "/test": "/test",
-    "/acc/getInfo": "/account/getInfo",
-    "/user/skins": "/valorant/skins",
-    "/acc/reAuth": "/account/reAuth",
-    "/user/accXP": "/valorant/levelXP",
-    "/user/matchHistory": "/valorant/matchHistory",
-    "/user/loadout": "/valorant/loadout",
-    "*": "/not_found"
+    "/": { "file": "/index", "method": ["GET"], "auth": false , "responseType": ["json"] } ,
+    "/acc/getinfo": { "file": "/account/getInfo", "method":["GET", "POST"], "auth": true , "responseType": ["html","json"] } ,
+    "/acc/delete": { "file": "/account/delete", "method": ["DELETE"], "auth": true , "responseType": ["json"] } ,
+    "/routes": { "file": "/routes", "method": ["GET"], "auth": true , "responseType": ["json"] } ,
+    "/user/skins": { "file": "/valorant/skins", "method": ["GET"], "auth": true , "responseType": ["json"] } ,
+    "/acc/reAuth": { "file": "/account/reAuth", "method": ["GET"], "auth": true , "responseType": ["json"] } ,
+    "/user/accXP": { "file": "/valorant/levelXP", "method": ["GET"], "auth": true , "responseType": ["json"] } ,
+    "/user/matchHistory": { "file": "/valorant/matchHistory", "method": ["GET"], "auth": true , "responseType": ["json"] } ,
+    "/user/loadout": { "file": "/valorant/loadout", "method": ["GET"], "auth": true , "responseType": ["json"] },
+    "/acc/getallinfo": {"file": "/account/getallinfo", "method": ["GET"], "auth": true , "responseType": ["json"] },
+    "/user/penalties": {"file": "/valorant/penalties", "method": ["GET"], "auth": true , "responseType": ["json"] },
+    "/test": {"file": "/test", "method": ["GET"], "auth": false , "responseType": ["json"]},
+    "/user/Rank": {"file": "/valorant/latestRank", "method": ["GET"], "auth": true , "responseType": ["json"]},
+    "/acc/wallet": {"file": "/account/wallet", "method": ["GET"], "auth": true , "responseType": ["json"]}
+
 }

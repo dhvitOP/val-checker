@@ -1,7 +1,8 @@
 import { Hono, Context } from "hono";
 const router = new Hono();
-import getAccLevel from '../../functions/info/getAccLevel';
+import getAccWallet from '../../functions/info/getWallet';
 import { save, findOne } from '../../database/utils';
+import currentSorter from '../../utils/converters/currencySorter';
 import axios from 'axios';
 
 import config from '../../constants/config.json';
@@ -21,23 +22,23 @@ router.get("/:accID", global.checkAuth,async(c:Context) => {
     if(!auth.data.data) return c.json({msg: "ID PASS Invalid, maybe password is changed"});
 
     const { token,ent_token } = auth.data.data;
-    const level = await getAccLevel({token:token,ent_token:ent_token,puuid:acc.puuid,region:acc.region});
-    if(level == "An error occured") return c.json({msg: "An error occured"});
+    const wallet = await getAccWallet({token:token,ent_token:ent_token,puuid:acc.puuid,region:acc.region});
+    if(wallet == "An error occured") return c.json({msg: "An error occured"});
     
     endTime(c, "Fetching_Level");
+
+    const currencies = await currentSorter(wallet);
 
     const loadout = await findOne("loadout",{accID: accID});
     if(!loadout) {
         await save("loadout",{
             accID: accID,
-            level: level.level,
-            xp: level.xp,
+            balance: currencies,
         });
     } else {
-        loadout.level = level.level;
-        loadout.xp = level.xp;
+        loadout.balance = currencies;
         await loadout.save();
     }
-    return c.json({msg: "Level Fetched Successfully", level: level.level, xp: level.xp});
+    return c.json({msg: "Balance Fetched Successfully", currencies: currencies});
 });
 export default router;

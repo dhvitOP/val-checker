@@ -4,7 +4,7 @@ import mongoose from 'mongoose';
 async function findOne(schemaName: string, query: Object) {
     try {
     const Model = mongoose.model(schemaName);
-    const result = (await Model.findOne(query).cacheQuery()) as any; 
+    const result = (await Model.findOne(query)) as any; 
     
     return result;
     } catch (err) {
@@ -25,7 +25,7 @@ async function save(schemaName: string, data: Object) {
 async function findAndUpdate(schemaName:string,query:Object,data:Object) {
     try{
     const Model = mongoose.model(schemaName);
-    const result = await Model.findOneAndUpdate(query,data).cacheQuery();
+    const result = await Model.findOneAndUpdate(query,data);
 
     return result;
     } catch (err) {
@@ -35,7 +35,7 @@ async function findAndUpdate(schemaName:string,query:Object,data:Object) {
 async function deleteOne(schemaName: string, query: Object) {
     try {
     const Model = mongoose.model(schemaName);
-    const result = await Model.deleteOne(query).cacheQuery();
+    const result = await Model.deleteOne(query);
     return result;
     } catch (err) {
         console.log(err);
@@ -44,7 +44,7 @@ async function deleteOne(schemaName: string, query: Object) {
 async function updateOne(schemaName: string, query: Object, data: Object) {
     try {
     const Model = mongoose.model(schemaName);
-    const result = await Model.updateOne(query,data).cacheQuery();
+    const result = await Model.updateOne(query,data);
     return result;
     } catch (err) {
         console.log(err);

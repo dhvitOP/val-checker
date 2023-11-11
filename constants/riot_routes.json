@@ -43,6 +43,16 @@
         "url": "https://pd.{region}.a.pvp.net/personalization/v2/players/{puuid}/playerloadout",
         "method": ["GET"],
         "purpose": "Getting User's Loadout using its puuid from UserInfo"
+    },
+    "competitiveUpdates": {
+        "url": "https://pd.{region}.a.pvp.net/mmr/v1/players/{puuid}/competitiveupdates?startIndex=0&endIndex=20&queue=competitive",
+        "method": ["GET"],
+        "purpose": "Getting User's Competitive Updates using its puuid from UserInfo"
+    },
+    "wallet": {
+        "url": "https://pd.{region}.a.pvp.net/store/v1/wallet/{puuid}",
+        "method": ["GET"],
+        "purpose": "Getting User's Wallet using its puuid from UserInfo"
     }
 
 }

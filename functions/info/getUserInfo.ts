@@ -7,11 +7,11 @@ const { url } = config.UserInfo;
 
 async function getInfo(token: string) {
     try {
-        token_headers.Authorization = token_headers.Authorization.replace("{token}", token); 
-        const res = await instance.post(url, data, { headers: token_headers });
+        token_headers["Authorization"] = "Bearer " + token;
+        const res = await instance.get(url, { headers: token_headers });
         return res.data;
 } catch (error) {
-    //console.log(error);
+    console.log(error.response.statusText);
     return "An error occured";
 }
 }

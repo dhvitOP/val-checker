@@ -1,0 +1,37 @@
+{
+    "status": 200,
+    "data": [
+        {
+            "uuid": "85ad13f7-3d1b-5128-9eb2-7cd8ee0b5741",
+            "displayName": "VP",
+            "displayNameSingular": "VP",
+            "displayIcon": "https://media.valorant-api.com/currencies/85ad13f7-3d1b-5128-9eb2-7cd8ee0b5741/displayicon.png",
+            "largeIcon": "https://media.valorant-api.com/currencies/85ad13f7-3d1b-5128-9eb2-7cd8ee0b5741/largeicon.png",
+            "assetPath": "ShooterGame/Content/Currencies/Currency_AresPoints_DataAsset"
+        },
+        {
+            "uuid": "85ca954a-41f2-ce94-9b45-8ca3dd39a00d",
+            "displayName": "Kingdom Credits",
+            "displayNameSingular": "Kingdom Credit",
+            "displayIcon": "https://media.valorant-api.com/currencies/85ca954a-41f2-ce94-9b45-8ca3dd39a00d/displayicon.png",
+            "largeIcon": "https://media.valorant-api.com/currencies/85ca954a-41f2-ce94-9b45-8ca3dd39a00d/largeicon.png",
+            "assetPath": "ShooterGame/Content/Currencies/Currency_Dough_DataAsset"
+        },
+        {
+            "uuid": "f08d4ae3-939c-4576-ab26-09ce1f23bb37",
+            "displayName": "Free Agents",
+            "displayNameSingular": "Free Agent",
+            "displayIcon": "https://media.valorant-api.com/currencies/f08d4ae3-939c-4576-ab26-09ce1f23bb37/displayicon.png",
+            "largeIcon": "https://media.valorant-api.com/currencies/f08d4ae3-939c-4576-ab26-09ce1f23bb37/largeicon.png",
+            "assetPath": "ShooterGame/Content/Currencies/Currency_RecruitmentToken_DataAsset"
+        },
+        {
+            "uuid": "e59aa87c-4cbf-517a-5983-6e81511be9b7",
+            "displayName": "Radianite Points",
+            "displayNameSingular": "Radianite Point",
+            "displayIcon": "https://media.valorant-api.com/currencies/e59aa87c-4cbf-517a-5983-6e81511be9b7/displayicon.png",
+            "largeIcon": "https://media.valorant-api.com/currencies/e59aa87c-4cbf-517a-5983-6e81511be9b7/largeicon.png",
+            "assetPath": "ShooterGame/Content/Currencies/Currency_UpgradeToken_DataAsset"
+        }
+    ]
+}
