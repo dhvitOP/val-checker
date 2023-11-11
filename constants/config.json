@@ -1,9 +1,8 @@
 {
-    "port": 3000,
-    "websiteUrl": "http://localhost:3000",
-    "mongoUrl1": "mongodb://127.0.0.1:27017/explorant",
-    "mongoUrl": "mongodb+srv://ee3dev:ee3dev28@open-ai.ythc9cp.mongodb.net/explorant",
-    "encryptKey": "KSFNBRYVSDBRGG12498941314190",
-    "multifactorKey": "VNIORGWOIJGR382309svsvs",
-    "apiUrl": "http://localhost:3000"
+    "port": 3000, // Your api's port
+    "websiteUrl": "http://localhost:3000", // Your website url (This isn't necessary to add)
+    "mongoUrl": "", //Your mongo db url
+    "encryptKey": "KSFNBRYVSDBRGG12498941314190", // Encryption key used to encrypt id and password (isn't needed in the project rn)
+    "multifactorKey": "VNIORGWOIJGR382309svsvs", // Encryption key to encrypt id and password between interaction to get 2FA multi-factor code
+    "apiUrl": "http://localhost:3000" // Your api url
 }
