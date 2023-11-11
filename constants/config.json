@@ -4,5 +4,6 @@
     "mongoUrl": "", //Your mongo db url
     "encryptKey": "KSFNBRYVSDBRGG12498941314190", // Encryption key used to encrypt id and password (isn't needed in the project rn)
     "multifactorKey": "VNIORGWOIJGR382309svsvs", // Encryption key to encrypt id and password between interaction to get 2FA multi-factor code
-    "apiUrl": "http://localhost:3000" // Your api url
+    "apiUrl": "http://localhost:3000", // Your api url
+    "AuthKey": "", //Key used in Authorization headers to access the API
 }
