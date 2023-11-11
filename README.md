@@ -1,10 +1,7 @@
-# acc-checker
+# Riot Account Details
 
 To install dependencies:
 
-```bash
-bun install
-```
 
 To run:
 
