@@ -6,9 +6,9 @@ import routes from "./constants/routes.json";
 import { prettyJSON } from 'hono/pretty-json'
 import { timing } from 'hono/timing'
 
-const { port, websiteUrl } = config;
+const { port, websiteUrl, AuthKey } = config;
 
-const token = "vedant_is_da_best_programmer";
+const token = AuthKey;
 const app: Hono = new Hono({ strict: false });
 
 database();
