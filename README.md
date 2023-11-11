@@ -51,6 +51,9 @@
 
 ## Guide
 * **To see every routes of this API, please check `constants/routes.json` or go to `/routes` route of the API to get details on every route**
+* **To report any issue you are facing, please create an issue request in github**
+* **If you have any features that you have added in the modified version of this API, you are welcomed to create a pull request and have it mergedin this main repository**
+* **To create any new route, you have to create a json object in `constants/routes.json` just as others are created and also create a new file according to the file location mentioned in routes.json and follow the method just as in `routes/index.ts`. All routes are to be created in the `routes` folder**
 
 
 ## NOTICE
