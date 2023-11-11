@@ -49,6 +49,10 @@
 **Refer to [Hono's Docs](https://hono.dev/middleware/builtin/timing)**
 **Honestly I don't know why i did this**
 
+## Guide
+* **To see every routes of this API, please check `constants/routes.json` or go to `/routes` route of the API to get details on every route**
+
+
 ## NOTICE
 **This is something you'll expect but obviously this is for only educational purposes and doesn't mean to harm or encourage anyone to bring harm to anyone using this tool**
   
