@@ -12,6 +12,9 @@
 * **Popular and somewhat optimized frameworks, modules are used such as Hono, Typescript**
 * **Bun is supported**
 
+## Database Purposes
+* **I want to make this sure that database is used not to just store account's data and its details but also to store its cookies to access the Riot's API and also to Re-Authenticate without the use of username and password**
+
 ## Prerequisites and Config requirements
 * **Any NodeJS version above 16 is okay [Download NodeJS](https://nodejs.org/en/download)**
 * **MongoDB url to access database and save account's data is needed [MongoDB atlas](https://www.mongodb.com/atlas/database)**
